@@ -3,7 +3,7 @@
 `BandNorm` is a Normalization method that removes depth effect and aligns distance effect efficiently. 
 Users can input a path of multiple single cells, or a data.frame containing all cells and receive a normalized data.frame file.
 
-<img src="https://github.com/sshen82/BandNorm/blob/Generate_README/bandnorm_intro.png" alt="BandNorm" width="400px">
+<img src="https://github.com/sshen82/BandNorm/blob/Generate_README/bandnorm_intro.png" alt="BandNorm" width="700px">
 
 There are four functions, `download_schic`, `bandnorm`, `create_embedding`, and `plot_embedding`.
 `download_schic` downloads one of the currently available single-cell Hi-C data cleaned by us,
