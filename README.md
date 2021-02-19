@@ -39,7 +39,7 @@ There are two possible ways to input the data:
 1. A path containing all cells in the form of [chr1, binA, chr2, binB, count],
 2. An R data.frame in the form of [chr1, binA, binB, count, diag, cell_name]. The column names should be c("chrom", "binA", "binB", "count", "diag", "cell")
 
-# Usage
+## Usage
 
 ```
 data("hic_df")
