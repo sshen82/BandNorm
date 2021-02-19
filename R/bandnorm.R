@@ -3,18 +3,24 @@
 #' This function allows you to calculate the BandNorm normalization.
 #' @param cell_line Must be one of "Kim2020", "Lee2019", "Li2019", "Ramani2017".
 #' @param cell_type If you need to download a specific cell-type from one cell line, indicate the name of the cell-type in here.
-#' @param save_path Indicate the output path for raw data.
+#' @param cell_path Indicate the output path for raw data.
 #' @export
 #' @examples
-#' download_schic("Li2019", save_path = "~/Downloads/")
-download_schic = function(cell_line, cell_type = NULL, save_path) {
+#' download_schic("Li2019", cell_path = "~/Downloads/")
+download_schic = function(cell_line, cell_type = NULL, cell_path, summary_path = NULL) {
   if (is.null(cell_type)){
-    input = paste("http://pages.stat.wisc.edu/~sshen82/bandnorm/Summary/", cell_line, "_list.txt")
+    input = paste("http://pages.stat.wisc.edu/~sshen82/bandnorm/Summary/", cell_line,
+                  "_list.txt")
   } else {
     input = paste("http://pages.stat.wisc.edu/~sshen82/bandnorm/Summary/", cell_line,
                   "_", cell_type, "_list.txt")
   }
-  system(paste("wget -i", input, "-P", save_path, sep = " "))
+  system(paste("wget -i", input, "-P", cell_path, sep = " "))
+  if (!is.null(summary_path)){
+    input_summary = paste("http://pages.stat.wisc.edu/~sshen82/bandnorm/Summary/",
+                          cell_line, "_Summary.txt")
+    system(paste("wget", input_summary, "-P", summary_path, sep = " "))
+  }
 }
 
 #' BandNorm

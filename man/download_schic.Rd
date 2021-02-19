@@ -4,18 +4,18 @@
 \alias{download_schic}
 \title{Download existing single-cell raw data}
 \usage{
-download_schic(cell_line, cell_type = NULL, save_path)
+download_schic(cell_line, cell_type = NULL, cell_path, summary_path = NULL)
 }
 \arguments{
 \item{cell_line}{Must be one of "Kim2020", "Lee2019", "Li2019", "Ramani2017".}
 
 \item{cell_type}{If you need to download a specific cell-type from one cell line, indicate the name of the cell-type in here.}
 
-\item{save_path}{Indicate the output path for raw data.}
+\item{cell_path}{Indicate the output path for raw data.}
 }
 \description{
 This function allows you to calculate the BandNorm normalization.
 }
 \examples{
-download_schic("Li2019", save_path = "~/Downloads/")
+download_schic("Li2019", cell_path = "~/Downloads/")
 }
