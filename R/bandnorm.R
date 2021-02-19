@@ -1,3 +1,22 @@
+#' Download existing single-cell raw data
+#'
+#' This function allows you to calculate the BandNorm normalization.
+#' @param cell_line Must be one of "Kim2020", "Lee2019", "Li2019", "Ramani2017".
+#' @param cell_type If you need to download a specific cell-type from one cell line, indicate the name of the cell-type in here.
+#' @param save_path Indicate the output path for raw data.
+#' @export
+#' @examples
+#' download_schic("Li2019", save_path = "~/Downloads/")
+download_schic = function(cell_line, cell_type = NULL, save_path) {
+  if (is.null(cell_type)){
+    input = paste("http://pages.stat.wisc.edu/~sshen82/bandnorm/Summary/", cell_line, "_list.txt")
+  } else {
+    input = paste("http://pages.stat.wisc.edu/~sshen82/bandnorm/Summary/", cell_line,
+                  "_", cell_type, "_list.txt")
+  }
+  system(paste("wget -i", input, "-P", save_path, sep = " "))
+}
+
 #' BandNorm
 #'
 #' This function allows you to calculate the BandNorm normalization.
@@ -15,7 +34,7 @@ bandnorm = function(path = NULL, hic_df = NULL, save = TRUE, save_path = NULL) {
   # Get path and name for all the cells in this path.
   if (!is.null(path)){
     paths = list.files(path, recursive = TRUE, full.names = TRUE)
-    names = list.files(path, recursive = TRUE)
+    names = basename(list.files(path, recursive = TRUE))
     # The input format of the cell should be [chr1, bin1, chr2, bin2, count].
     load_cell = function(i) {
       return(fread(paths[i]) %>% rename(chrom = V1, binA = V2, binB = V4, count = V5) %>%
@@ -41,7 +60,7 @@ bandnorm = function(path = NULL, hic_df = NULL, save = TRUE, save_path = NULL) {
   return(hic_df)
 }
 
-#' create_embedding
+#' Create PCA embedding
 #'
 #' This function allows you to obtain the PCA embedding for tSNE or UMAP plotting.
 #' @param path The path for all the normalized cells in a directory. There can be sub-directories. Using path means loading the bandnorm normalized data iteratively from the directory, so it is relatively slower than using hic_df. However, it won't eat up your memory too much, and the speed is acceptable.
@@ -93,7 +112,7 @@ create_embedding = function(path = NULL, hic_df = NULL, mean_thres = 0, var_thre
     }
   } else {
     paths = list.files(path, recursive = TRUE, full.names = TRUE)
-    names = list.files(path, recursive = TRUE)
+    names = basename(list.files(path, recursive = TRUE))
     cell_names = names
     load_cell = function(i) {
       return(fread(paths[i]) %>% rename(chrom = V1, binA = V2, binB = V4, BandNorm = V5) %>%
@@ -132,7 +151,7 @@ create_embedding = function(path = NULL, hic_df = NULL, mean_thres = 0, var_thre
   return(pca_mat)
 }
 
-#' plot_embedding
+#' Plot tSNE or UMAP embedding
 #'
 #' This function allows you to calculate and plot the UMAP or tSNE embedding.
 #' @param embedding The PCA embedding obtained from create_embedding.

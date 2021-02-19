@@ -2,7 +2,7 @@
 % Please edit documentation in R/bandnorm.R
 \name{create_embedding}
 \alias{create_embedding}
-\title{create_embedding}
+\title{Create PCA embedding}
 \usage{
 create_embedding(
   path = NULL,

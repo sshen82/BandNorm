@@ -2,7 +2,7 @@
 % Please edit documentation in R/bandnorm.R
 \name{plot_embedding}
 \alias{plot_embedding}
-\title{plot_embedding}
+\title{Plot tSNE or UMAP embedding}
 \usage{
 plot_embedding(embedding, type, cell_type = NULL)
 }
