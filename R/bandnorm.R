@@ -6,20 +6,34 @@
 #' @param cell_path Indicate the output path for raw data.
 #' @export
 #' @examples
-#' download_schic("Li2019", cell_path = "~/Downloads/")
+#' download_schic("Li2019", cell_path = getwd())
 download_schic = function(cell_line, cell_type = NULL, cell_path, summary_path = NULL) {
-  if (is.null(cell_type)){
+  if (!is.null(summary_path)) {
+    input_summary = paste("http://pages.stat.wisc.edu/~sshen82/bandnorm/Summary/",
+                          cell_line, "_Summary.txt", sep = "")
+    download.file(input_summary, destfile = paste(summary_path, "/", cell_line,
+                                                  "_Summary.txt", sep = ""))
+  }
+  if (is.null(cell_type)) {
     input = paste("http://pages.stat.wisc.edu/~sshen82/bandnorm/Summary/", cell_line,
-                  "_list.txt")
+                  "_list.txt", sep = "")
+    download.file(input, destfile = paste(cell_path, "/", cell_line,
+                                          "_list.txt", sep = ""))
+    list_files = fread(paste(cell_path, "/", cell_line, "_list.txt", sep = ""), header = FALSE)
   } else {
     input = paste("http://pages.stat.wisc.edu/~sshen82/bandnorm/Summary/", cell_line,
-                  "_", cell_type, "_list.txt")
+                  "_", cell_type, "_list.txt", sep = "")
+    download.file(input, destfile = paste(cell_path, "/", cell_line,
+                                          "_", cell_type, "_list.txt", sep = ""))
+    list_files = fread(paste(cell_path, "/", cell_line, "_", cell_type, "_list.txt", sep = ""), header = FALSE)
   }
-  system(paste("wget -i", input, "-P", cell_path, sep = " "))
-  if (!is.null(summary_path)){
-    input_summary = paste("http://pages.stat.wisc.edu/~sshen82/bandnorm/Summary/",
-                          cell_line, "_Summary.txt")
-    system(paste("wget", input_summary, "-P", summary_path, sep = " "))
+  for (i in list_files$V1){
+    download.file(i, destfile = paste(cell_path, basename(i), sep = ""))
+  }
+  if (is.null(cell_type)) {
+    file.remove(paste(cell_path, "/", cell_line, "_list.txt", sep = ""))
+  } else {
+    file.remove(paste(cell_path, "/", cell_line, "_", cell_type, "_list.txt", sep = ""))
   }
 }
 

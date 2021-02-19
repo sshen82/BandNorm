@@ -17,5 +17,5 @@ download_schic(cell_line, cell_type = NULL, cell_path, summary_path = NULL)
 This function allows you to calculate the BandNorm normalization.
 }
 \examples{
-download_schic("Li2019", cell_path = "~/Downloads/")
+download_schic("Li2019", cell_path = getwd())
 }
