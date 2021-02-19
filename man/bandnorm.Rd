@@ -4,10 +4,12 @@
 \alias{bandnorm}
 \title{BandNorm}
 \usage{
-bandnorm(path, save = TRUE, save_path = NULL)
+bandnorm(path = NULL, hic_df = NULL, save = TRUE, save_path = NULL)
 }
 \arguments{
 \item{path}{The path for all the cells in a directory. There can be sub-directories.}
+
+\item{hic_df}{If you prepare the dataset as a format of "chrom", "binA", "binB", "count", "diag", "cell", you can input it into bandnorm directly.}
 
 \item{save}{Whether to save each normalized cells. Default is TRUE. Note that if don't have large memory on your computer, and you need to use create_embedding function, it is highly recommended to save the cells because it helps lower the cost of memory in this function.}
 
@@ -17,5 +19,6 @@ bandnorm(path, save = TRUE, save_path = NULL)
 This function allows you to calculate the BandNorm normalization.
 }
 \examples{
-bandnorm()
+data("hic_df")
+bandnorm_result = bandnorm(hic_df = hic_df, save = FALSE)
 }

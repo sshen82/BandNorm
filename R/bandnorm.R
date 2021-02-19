@@ -2,21 +2,27 @@
 #'
 #' This function allows you to calculate the BandNorm normalization.
 #' @param path The path for all the cells in a directory. There can be sub-directories.
+#' @param hic_df If you prepare the dataset as a format of "chrom", "binA", "binB", "count", "diag", "cell", you can input it into bandnorm directly.
 #' @param save Whether to save each normalized cells. Default is TRUE. Note that if don't have large memory on your computer, and you need to use create_embedding function, it is highly recommended to save the cells because it helps lower the cost of memory in this function.
 #' @param save_path Indicate the output path for normalized cells. Only need it when "save" parameter is TRUE. Default is NULL.
 #' @export
+#' @import data.table
+#' @import dplyr
 #' @examples
-#' bandnorm()
-bandnorm = function(path, save = TRUE, save_path = NULL) {
+#' data("hic_df")
+#' bandnorm_result = bandnorm(hic_df = hic_df, save = FALSE)
+bandnorm = function(path = NULL, hic_df = NULL, save = TRUE, save_path = NULL) {
   # Get path and name for all the cells in this path.
-  paths = list.files(path, recursive = TRUE, full.names = TRUE)
-  names = list.files(path, recursive = TRUE)
-  # The input format of the cell should be [chr1, bin1, chr2, bin2, count].
-  load_cell = function(i) {
-    return(fread(paths[i]) %>% rename(chrom = V1, binA = V2, binB = V4, count = V5) %>%
-             mutate(diag = abs(binB - binA), cell = names[i]) %>% select(-V3))
+  if (!is.null(path)){
+    paths = list.files(path, recursive = TRUE, full.names = TRUE)
+    names = list.files(path, recursive = TRUE)
+    # The input format of the cell should be [chr1, bin1, chr2, bin2, count].
+    load_cell = function(i) {
+      return(fread(paths[i]) %>% rename(chrom = V1, binA = V2, binB = V4, count = V5) %>%
+               mutate(diag = abs(binB - binA), cell = names[i]) %>% select(-V3))
+    }
+    hic_df = rbindlist(lapply(1:length(paths), load_cell))
   }
-  hic_df = rbindlist(lapply(1:length(paths), load_cell))
   # Calculate band depth and the mean of band depth for bandnorm.
   band_info <- hic_df %>% group_by(chrom, diag, cell) %>% summarise(band_depth = sum(count))
   alpha_j <- band_info %>% group_by(chrom, diag) %>% summarise(depth = mean(band_depth))
@@ -46,8 +52,14 @@ bandnorm = function(path, save = TRUE, save_path = NULL) {
 #' @param do_harmony Whether to use Harmony to remove the batch effect from the embedding. Default is FALSE
 #' @param batch The batch information used for Harmony to remove the batch effect. Required if do_harmony is TRUE.
 #' @export
+#' @import data.table
+#' @import dplyr
+#' @import harmony
 #' @examples
-#' bandnorm()
+#' data("hic_df")
+#' data("batch")
+#' bandnorm_result = bandnorm(hic_df = hic_df, save = FALSE)
+#' embedding = create_embedding(hic_df = bandnorm_result, do_harmony = TRUE, batch = batch)
 create_embedding = function(path = NULL, hic_df = NULL, mean_thres = 0, var_thres = 0,
                             dim_pca = 50, do_harmony = FALSE, batch = NULL) {
   # Function to create embedding for cells, after combining all the bin-pairs from all chromosomes,
@@ -59,19 +71,20 @@ create_embedding = function(path = NULL, hic_df = NULL, mean_thres = 0, var_thre
   # For path, it means loading the bandnorm normalized data iteratively, so it is slower. However,
   # it won't eat up your memory too much, and the speed is also acceptable.
   if (is.null(path)) {
+    setDT(hic_df)
     summarized_hic = hic_df[, .(agg_m = mean(BandNorm), agg_v = var(BandNorm)),
                             by = .(chrom, binA, binB)]
     summarized_hic[is.na(agg_v), "agg_v"] = 0
-    summarized_hic = summarized_hic[(binA - binB) != 0 && agg_m >= quantile(agg_m,
-                                                                            mean_thres) && agg_v >= quantile(agg_v, var_thres), -c("agg_m", "agg_v")]
+    summarized_hic = summarized_hic %>% filter(binA - binB != 0, agg_m >= quantile(agg_m,
+                     mean_thres), agg_v >= quantile(agg_v, var_thres)) %>% select(chrom, binA, binB)
     cell_names = unique(hic_df$cell)
     input_mat = matrix(0, nrow = length(cell_names), ncol = nrow(summarized_hic))
     for (i in 1:length(cell_names)) {
       output_cell = summarized_hic
       output_cell$BandNorm = 0
-      temp = hic_df %>% filter(diag > 0 && cell == cell_names[i]) %>% filter(chrom %in%
-                                                                               summarized_hic$chrom && binA %in% summarized_hic$binA && binB %in%
-                                                                               summarized_hic$binB)
+      temp = hic_df %>% filter(diag > 0, cell == cell_names[i], chrom %in%
+                                         summarized_hic$chrom, binA %in% summarized_hic$binA, binB %in%
+                                         summarized_hic$binB)
       setDT(output_cell)
       setDT(temp)
       output_cell = output_cell[temp, `:=`(BandNorm, i.BandNorm), on = .(chrom,
@@ -126,8 +139,16 @@ create_embedding = function(path = NULL, hic_df = NULL, mean_thres = 0, var_thre
 #' @param type A string of "tSNE" or "UMAP".
 #' @param cell_type Include the cell type information in the plot. Default is NULL.
 #' @export
+#' @import umap
+#' @import Rtsne
+#' @import ggplot2
 #' @examples
-#' bandnorm()
+#' data("hic_df")
+#' data("batch")
+#' data("cell_type")
+#' bandnorm_result = bandnorm(hic_df = hic_df, save = FALSE)
+#' embedding = create_embedding(hic_df = bandnorm_result, do_harmony = TRUE, batch = batch)
+#' plot_embedding(embedding, "UMAP", cell_type = cell_type)
 plot_embedding = function(embedding, type, cell_type = NULL) {
   if (is.null(cell_type)){
     if (type == "tSNE") {

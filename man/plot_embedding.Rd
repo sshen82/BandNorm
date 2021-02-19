@@ -17,5 +17,10 @@ plot_embedding(embedding, type, cell_type = NULL)
 This function allows you to calculate and plot the UMAP or tSNE embedding.
 }
 \examples{
-bandnorm()
+data("hic_df")
+data("batch")
+data("cell_type")
+bandnorm_result = bandnorm(hic_df = hic_df, save = FALSE)
+embedding = create_embedding(hic_df = bandnorm_result, do_harmony = TRUE, batch = batch)
+plot_embedding(embedding, "UMAP", cell_type = cell_type)
 }

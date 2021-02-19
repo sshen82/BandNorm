@@ -33,5 +33,8 @@ create_embedding(
 This function allows you to obtain the PCA embedding for tSNE or UMAP plotting.
 }
 \examples{
-bandnorm()
+data("hic_df")
+data("batch")
+bandnorm_result = bandnorm(hic_df = hic_df, save = FALSE)
+embedding = create_embedding(hic_df = bandnorm_result, do_harmony = TRUE, batch = batch)
 }
