@@ -1,0 +1,25 @@
+Package: BandNorm
+Type: Package
+Title: BandNorm Method for single-cell Hi-C
+Version: 0.0.1
+Author:
+    Ye Zheng <yezheng.stat@gmail.com> 
+    Siqi Shen <sshen82@wisc.edu>
+    Sunduz Keles <keles@stat.wisc.edu>
+Maintainer: Siqi Shen <sshen82@wisc.edu>
+Description: 
+    BandNorm is a simple normalization method for cell-type identification 
+    and other downstream analysis for single-cell Hi-C data. It aligns both the 
+    library size difference and the distance effect among cells.
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+Imports:
+    ggplot2,
+    dplyr,
+    data.table,
+    Rtsne,
+    harmony,
+    umap
+Depends: R (>= 3.6)
+RoxygenNote: 7.1.1
