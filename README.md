@@ -14,9 +14,7 @@ and `plot_embedding` calculates UMAP or tSNE embedding from the PCA obtained fro
 If necessary, install the dependencies:
 
 ```
-install.packages(c('ggplot2', 'dplyr', 'data.table',
-    'Rtsne',
-    'umap'))
+install.packages(c('ggplot2', 'dplyr', 'data.table', 'Rtsne', 'umap'))
 
 if (!requireNamespace("devtools", quietly=TRUE))
     install.packages("devtools")
