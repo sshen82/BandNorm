@@ -3,7 +3,8 @@
 `BandNorm` is a Normalization method that removes depth effect and aligns distance effect efficiently. 
 Users can input a path of multiple single cells, or a data.frame containing all cells and receive a normalized data.frame file.
 
-There are three functions, `bandnorm`, `create_embedding`, and `plot_embedding`.
+There are four functions, `download_schic`, `bandnorm`, `create_embedding`, and `plot_embedding`.
+`download_schic` downloads one of the currently available single-cell Hi-C data cleaned by us,
 `bandnorm` takes in sparse matrices and normalize them using BandNorm method, 
 `create_embedding` summarizes the data into a PCA embedding in preparation for clustering and lower dimension embedding,
 and `plot_embedding` calculates UMAP or tSNE embedding from the PCA obtained from `create_embedding`, and plots the resulting embedding.
@@ -36,6 +37,10 @@ There are two possible ways to input the data:
 
 1. A path containing all cells in the form of [chr1, binA, chr2, binB, count],
 2. An R data.frame in the form of [chr1, binA, binB, count, diag, cell_name]. The column names should be c("chrom", "binA", "binB", "count", "diag", "cell")
+
+## Download data
+
+You can also use `download_schic` function to download real data. The available data includes Kim2020, Li2019, Ramani2017, and Lee2019. There are also summary files available for them, and the summary includes batch, cell-type, depth and sparsity information for them.
 
 ## Usage
 
