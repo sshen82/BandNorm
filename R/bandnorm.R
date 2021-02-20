@@ -164,6 +164,9 @@ create_embedding = function(path = NULL, hic_df = NULL, mean_thres = 0, var_thre
   pca_mat = prcomp(input_mat)$x[, 1:dim_pca]
   # Whether to use Harmony to clean the PCA embedding.
   if (do_harmony) {
+    colnames(batch) = c("cell_name", "batch")
+    batch = data.frame(batch)
+    batch = batch[match(batch$cell_name, cell_names), ]$batch
     pca_mat <- HarmonyMatrix(pca_mat, batch, "dataset", do_pca = FALSE)
     pca_mat = (pca_mat)[, 1:dim_pca]
   }
@@ -204,6 +207,10 @@ plot_embedding = function(embedding, type, cell_type = NULL) {
         xlab("UMAP 1") + theme_bw(base_size = 15)
     }
   } else {
+    cell_names = rownames(embedding)
+    colnames(cell_type) = c("cell_name", "cluster")
+    cell_type = data.frame(cell_type)
+    cell_type = cell_type[match(cell_type$cell_name, cell_names), ]$cluster
     if (type == "tSNE") {
       embedding = Rtsne(embedding)$Y
       embedding = data.frame(embedding)

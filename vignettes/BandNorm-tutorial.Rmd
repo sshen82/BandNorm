@@ -1,0 +1,97 @@
+---
+title: "BandNorm-tutorial"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{BandNorm-tutorial}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+## Introduction
+
+The advent of single-cell sequencing technologies in profiling 3D genome organization led to development of single-cell high-throughput chromatin conformation (scHi-C) assays. Data from these assays enhance our ability to study dynamic chromatin architecture and the impact of spatial genome interactions on cell regulation at an unprecedented resolution. At the individual cell resolution, heterogeneity driven by the stochastic nature of chromatin fiber, various nuclear processes, and unwanted variation due to sequencing depths and batch effects poses major analytical challenges for inferring single cell-level 3D genome organizations.
+
+To explicitly capture chromatin conformation features and distinguish cells based on their 3D genome organizations, we develop a simple and fast band normalization approach, `BandNorm`. `BandNorm` first removes genomic distance bias within a cell, and sequencing depth normalizes between cells. Consequently, `BandNorm` adds back a common band-dependent contact decay profile for the contact matrices across cells. The former step is achieved by dividing the interaction frequencies of each band within a cell with the cell’s band mean. The latter step is implemented by multiplying each scaled band by the average band mean across cells.
+
+![The introduction for BandNorm](https://github.com/sshen82/BandNorm/blob/main/figures/bandnorm_intro.png)
+
+## Installation
+
+To use `BandNorm`, the following packages are necessary:
+
+```{r setup}
+install.packages(c('ggplot2', 'dplyr', 'data.table', 'Rtsne', 'umap'))
+
+if (!requireNamespace("devtools", quietly=TRUE))
+    install.packages("devtools")
+
+devtools::install_github("immunogenomics/harmony")
+```
+
+BandNorm can be installed from Github:
+
+```{r install-BandNorm}
+devtools::install_github('sshen82/BandNorm', build_vignettes = TRUE)
+```
+
+## Format of input
+
+There are two possible ways to input the data:
+
+1. A path containing all cells in the form of [chr1, binA, chr2, binB, count],
+
+2. An R data.frame in the form of [chr1, binA, binB, count, diag, cell_name]. The column names should be c("chrom", "binA", "binB", "count", "diag", "cell")
+
+```{r load_packages, include=FALSE}
+library(BandNorm)
+data(hic_df)
+print(hic_df)
+```
+
+For the example dataset, we also have batch information and cell-type information. Note that the cell_name in those external information should be consistent with the hic_df file.
+
+```{r load_external_info, include=FALSE}
+data(batch)
+data(cell_type)
+print(batch[1:10, ])
+print(cell_type[1:10, ])
+```
+
+## Download existing single-cell Hi-C data
+
+You can also use `download_schic` function to download real data. The available data includes Kim2020, Li2019, Ramani2017, and Lee2019. You can specify one of the cell-types in those cell lines. There are also summary files available for them, and the summary includes batch, cell-type, depth and sparsity information. You can go to [this website](http://pages.stat.wisc.edu/~sshen82/bandnorm/) for more information.
+
+```{r download_data, include=FALSE}
+# download_schic("Li2019", cell_type = "2i", getwd(), summary_path = getwd())
+```
+
+## Use BandNorm
+
+After obtaining the hic_df file, you can use the `bandnorm` function to normalize the data. The result consists of 6 columns: chromosome, binA, binB, diag (which is binB - binA), cell (which is the name of the cell), and BandNorm. You can use the save option to save the normalized file, and if so, you need to give a path for output.
+
+```{r BandNorm, include=FALSE}
+bandnorm_result = bandnorm(hic_df = hic_df, save = FALSE)
+bandnorm_result
+# bandnorm_result = bandnorm(hic_df = hic_df, save = TRUE, save_path = getwd())
+```
+
+Then, you can use `create_embedding` function to obtain a PCA embedding for the data. You can choose to use Harmony to remove the batch effect.
+
+```{r embedding, include=FALSE}
+embedding = create_embedding(hic_df = bandnorm_result, do_harmony = TRUE, batch = batch)
+embedding[1:10, ]
+```
+
+Finally, using the embedding, you can use UMAP or tSNE to get a projection of all the cells on the 2D plane. If you have the cell-type information, it is possible to color them on the plot.
+
+```{r embedding, include=FALSE}
+plot_embedding(embedding, "UMAP", cell_type = cell_type)
+```
+
