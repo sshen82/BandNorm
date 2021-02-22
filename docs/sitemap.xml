@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>http://sshen82.github.io/BandNorm/index.html</loc>
+  </url>
+  <url>
+    <loc>http://sshen82.github.io/BandNorm/reference/bandnorm.html</loc>
+  </url>
+  <url>
+    <loc>http://sshen82.github.io/BandNorm/reference/create_embedding.html</loc>
+  </url>
+  <url>
+    <loc>http://sshen82.github.io/BandNorm/reference/download_schic.html</loc>
+  </url>
+  <url>
+    <loc>http://sshen82.github.io/BandNorm/reference/plot_embedding.html</loc>
+  </url>
+  <url>
+    <loc>http://sshen82.github.io/BandNorm/articles/BandNorm-tutorial.html</loc>
+  </url>
+</urlset>

@@ -3,5 +3,8 @@ pkgdown: 1.6.1
 pkgdown_sha: ~
 articles:
   BandNorm-tutorial: BandNorm-tutorial.html
-last_built: 2021-02-22T16:57Z
+last_built: 2021-02-22T17:10Z
+urls:
+  reference: http://sshen82.github.io/BandNorm/reference
+  article: http://sshen82.github.io/BandNorm/articles
 
