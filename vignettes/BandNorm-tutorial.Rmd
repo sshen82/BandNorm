@@ -38,7 +38,7 @@ devtools::install_github("immunogenomics/harmony")
 BandNorm can be installed from Github:
 
 ```{r install-BandNorm}
-devtools::install_github('sshen82/BandNorm', build_vignettes = TRUE)
+# devtools::install_github('sshen82/BandNorm', build_vignettes = TRUE)
 ```
 
 ## Format of input
@@ -91,7 +91,7 @@ embedding[1:10, ]
 
 Finally, using the embedding, you can use UMAP or tSNE to get a projection of all the cells on the 2D plane. If you have the cell-type information, it is possible to color them on the plot.
 
-```{r embedding, include=FALSE}
+```{r plot_embedding, include=FALSE}
 plot_embedding(embedding, "UMAP", cell_type = cell_type)
 ```
 
