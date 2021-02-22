@@ -49,15 +49,15 @@ There are two possible ways to input the data:
 
 2. An R data.frame in the form of [chr1, binA, binB, count, diag, cell_name]. The column names should be c("chrom", "binA", "binB", "count", "diag", "cell")
 
-```{r load_packages, include=FALSE}
+```{r load_packages}
 library(BandNorm)
 data(hic_df)
-print(hic_df)
+print(hic_df[1:10, ])
 ```
 
 For the example dataset, we also have batch information and cell-type information. Note that the cell_name in those external information should be consistent with the hic_df file.
 
-```{r load_external_info, include=FALSE}
+```{r load_external_info}
 data(batch)
 data(cell_type)
 print(batch[1:10, ])
@@ -68,30 +68,30 @@ print(cell_type[1:10, ])
 
 You can also use `download_schic` function to download real data. The available data includes Kim2020, Li2019, Ramani2017, and Lee2019. You can specify one of the cell-types in those cell lines. There are also summary files available for them, and the summary includes batch, cell-type, depth and sparsity information. You can go to [this website](http://pages.stat.wisc.edu/~sshen82/bandnorm/) for more information.
 
-```{r download_data, include=FALSE}
-# download_schic("Li2019", cell_type = "2i", getwd(), summary_path = getwd())
+```{r download_data}
+download_schic("Li2019", cell_type = "2i", getwd(), summary_path = getwd())
 ```
 
 ## Use BandNorm
 
 After obtaining the hic_df file, you can use the `bandnorm` function to normalize the data. The result consists of 6 columns: chromosome, binA, binB, diag (which is binB - binA), cell (which is the name of the cell), and BandNorm. You can use the save option to save the normalized file, and if so, you need to give a path for output.
 
-```{r BandNorm, include=FALSE}
+```{r BandNorm}
 bandnorm_result = bandnorm(hic_df = hic_df, save = FALSE)
-bandnorm_result
+bandnorm_result[1:10, ]
 # bandnorm_result = bandnorm(hic_df = hic_df, save = TRUE, save_path = getwd())
 ```
 
 Then, you can use `create_embedding` function to obtain a PCA embedding for the data. You can choose to use Harmony to remove the batch effect.
 
-```{r embedding, include=FALSE}
+```{r embedding}
 embedding = create_embedding(hic_df = bandnorm_result, do_harmony = TRUE, batch = batch)
 embedding[1:10, ]
 ```
 
 Finally, using the embedding, you can use UMAP or tSNE to get a projection of all the cells on the 2D plane. If you have the cell-type information, it is possible to color them on the plot.
 
-```{r plot_embedding, include=FALSE}
+```{r plot_embedding}
 plot_embedding(embedding, "UMAP", cell_type = cell_type)
 ```
 
