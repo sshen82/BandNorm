@@ -2,8 +2,11 @@
 
 Ye Zheng\*, Siqi Shen\* and Sündüz Keleş. Normalization and De-noising of single-cell Hi-C Data with BandNorm and 3DVI. bioRxiv (2021). * contribute equally.
 
-`BandNorm` is a Normalization method that removes depth effect and aligns distance effect efficiently. 
-Users can input a path of multiple single cells, or a data.frame containing all cells and receive a normalized data.frame file.
+## What is BandNorm?
+
+The advent of single-cell sequencing technologies in profiling 3D genome organization led to development of single-cell high-throughput chromatin conformation (scHi-C) assays. Data from these assays enhance our ability to study dynamic chromatin architecture and the impact of spatial genome interactions on cell regulation at an unprecedented resolution. At the individual cell resolution, heterogeneity driven by the stochastic nature of chromatin fiber, various nuclear processes, and unwanted variation due to sequencing depths and batch effects poses major analytical challenges for inferring single cell-level 3D genome organizations.
+
+To explicitly capture chromatin conformation features and distinguish cells based on their 3D genome organizations, we develop a simple and fast band normalization approach, `BandNorm`, as well as a deep generative modeling framework, [3DVI](https://github.com/yezhengSTAT/3DVI), for more structured modeling of scHi-C data. `BandNorm` first removes genomic distance bias within a cell, and sequencing depth normalizes between cells. Consequently, `BandNorm` adds back a common band-dependent contact decay profile for the contact matrices across cells. The former step is achieved by dividing the interaction frequencies of each band within a cell with the cell’s band mean. The latter step is implemented by multiplying each scaled band by the average band mean across cells.
 
 <img src="https://github.com/sshen82/BandNorm/blob/main/figures/bandnorm_intro.png" alt="BandNorm" width="700px">
 
@@ -12,7 +15,7 @@ There are four functions, `download_schic`, `bandnorm`, `create_embedding`, and 
 `bandnorm` takes in sparse matrices and normalize them using BandNorm method, 
 `create_embedding` summarizes the data into a PCA embedding in preparation for clustering and lower dimension embedding,
 and `plot_embedding` calculates UMAP or tSNE embedding from the PCA obtained from `create_embedding`, and plots the resulting embedding.
-(See vignette (`browseVignettes("BandNorm")) for more detail.)
+(See vignette (`browseVignettes("BandNorm"))` or visit [BandNorm website](https://sshen82.github.io/BandNorm) for more detail.)
 
 ## Installation
 

@@ -26,7 +26,7 @@ To explicitly capture chromatin conformation features and distinguish cells base
 
 To use `BandNorm`, the following packages are necessary:
 
-```{r setup}
+```{r setup, eval = FALSE}
 install.packages(c('ggplot2', 'dplyr', 'data.table', 'Rtsne', 'umap'))
 
 if (!requireNamespace("devtools", quietly=TRUE))
@@ -37,8 +37,8 @@ devtools::install_github("immunogenomics/harmony")
 
 BandNorm can be installed from Github:
 
-```{r install-BandNorm}
-# devtools::install_github('sshen82/BandNorm', build_vignettes = TRUE)
+```{r install-BandNorm, eval = FALSE}
+devtools::install_github('sshen82/BandNorm', build_vignettes = TRUE)
 ```
 
 ## Format of input
@@ -68,7 +68,7 @@ print(cell_type[1:10, ])
 
 You can also use `download_schic` function to download real data. The available data includes Kim2020, Li2019, Ramani2017, and Lee2019. You can specify one of the cell-types in those cell lines. There are also summary files available for them, and the summary includes batch, cell-type, depth and sparsity information. You can go to [this website](http://pages.stat.wisc.edu/~sshen82/bandnorm/) for more information.
 
-```{r download_data}
+```{r download_data, eval = FALSE}
 download_schic("Li2019", cell_type = "2i", getwd(), summary_path = getwd())
 ```
 

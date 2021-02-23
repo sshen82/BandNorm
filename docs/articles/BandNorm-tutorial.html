@@ -103,32 +103,14 @@
 <p>To use <code>BandNorm</code>, the following packages are necessary:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'ggplot2'</span>, <span class="st">'dplyr'</span>, <span class="st">'data.table'</span>, <span class="st">'Rtsne'</span>, <span class="st">'umap'</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; Installing packages into 'C:/Users/solei/AppData/Local/Temp/RtmpeyvcFC/temp_libpath8c872f72b2'</span>
-<span class="co">#&gt; (as 'lib' is unspecified)</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;   There is a binary version available but the source version is later:</span>
-<span class="co">#&gt;            binary source needs_compilation</span>
-<span class="co">#&gt; data.table 1.13.6 1.14.0              TRUE</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;   Binaries will be installed</span>
-<span class="co">#&gt; package 'ggplot2' successfully unpacked and MD5 sums checked</span>
-<span class="co">#&gt; package 'dplyr' successfully unpacked and MD5 sums checked</span>
-<span class="co">#&gt; package 'data.table' successfully unpacked and MD5 sums checked</span>
-<span class="co">#&gt; package 'Rtsne' successfully unpacked and MD5 sums checked</span>
-<span class="co">#&gt; package 'umap' successfully unpacked and MD5 sums checked</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; The downloaded binary packages are in</span>
-<span class="co">#&gt;  C:\Users\solei\AppData\Local\Temp\RtmpopqjNn\downloaded_packages</span>
 
 <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html">requireNamespace</a></span><span class="op">(</span><span class="st">"devtools"</span>, quietly<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>
     <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"devtools"</span><span class="op">)</span>
 
-<span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span><span class="op">(</span><span class="st">"immunogenomics/harmony"</span><span class="op">)</span>
-<span class="co">#&gt; Skipping install of 'harmony' from a github remote, the SHA1 (c8f4901e) has not changed since last install.</span>
-<span class="co">#&gt;   Use `force = TRUE` to force installation</span></code></pre></div>
+<span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span><span class="op">(</span><span class="st">"immunogenomics/harmony"</span><span class="op">)</span></code></pre></div>
 <p>BandNorm can be installed from Github:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># devtools::install_github('sshen82/BandNorm', build_vignettes = TRUE)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span><span class="op">(</span><span class="st">'sshen82/BandNorm'</span>, build_vignettes <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="format-of-input" class="section level2">
 <h2 class="hasAnchor">
@@ -213,8 +195,7 @@
 <a href="#download-existing-single-cell-hi-c-data" class="anchor"></a>Download existing single-cell Hi-C data</h2>
 <p>You can also use <code>download_schic</code> function to download real data. The available data includes Kim2020, Li2019, Ramani2017, and Lee2019. You can specify one of the cell-types in those cell lines. There are also summary files available for them, and the summary includes batch, cell-type, depth and sparsity information. You can go to <a href="http://pages.stat.wisc.edu/~sshen82/bandnorm/">this website</a> for more information.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/download_schic.html">download_schic</a></span><span class="op">(</span><span class="st">"Li2019"</span>, cell_type <span class="op">=</span> <span class="st">"2i"</span>, <span class="fu"><a href="https://rdrr.io/r/base/getwd.html">getwd</a></span><span class="op">(</span><span class="op">)</span>, summary_path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html">getwd</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; [1] TRUE</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="../reference/download_schic.html">download_schic</a></span><span class="op">(</span><span class="st">"Li2019"</span>, cell_type <span class="op">=</span> <span class="st">"2i"</span>, <span class="fu"><a href="https://rdrr.io/r/base/getwd.html">getwd</a></span><span class="op">(</span><span class="op">)</span>, summary_path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/getwd.html">getwd</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="use-bandnorm" class="section level2">
 <h2 class="hasAnchor">
@@ -246,107 +227,108 @@
 <span class="co">#&gt; Harmony 6/10</span>
 <span class="co">#&gt; Harmony 7/10</span>
 <span class="co">#&gt; Harmony 8/10</span>
-<span class="co">#&gt; Harmony converged after 8 iterations</span>
+<span class="co">#&gt; Harmony 9/10</span>
+<span class="co">#&gt; Harmony 10/10</span>
 <span class="va">embedding</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, <span class="op">]</span>
-<span class="co">#&gt;                 PC1       PC2        PC3         PC4         PC5         PC6</span>
-<span class="co">#&gt; Astro_1  -16.088879 36.828037 -24.143623 35.43368597 -36.6517784 -14.8020568</span>
-<span class="co">#&gt; Astro_2   -8.511727 33.536804   3.587008 12.06314957  -7.4167905   5.0343681</span>
-<span class="co">#&gt; Astro_3    3.182949 15.041640  -3.837564  0.09310031  11.1965322 -11.7845340</span>
-<span class="co">#&gt; Astro_4   -3.641565 33.554168 -25.610914 10.03139984  -9.8348179  -9.9873390</span>
-<span class="co">#&gt; Astro_5   14.913951 18.383487 -23.600778 11.30562793 -21.9246380 -10.7408510</span>
-<span class="co">#&gt; Astro_6  -17.652296 20.865048 -23.468478  1.59054732  -7.4702821   8.8453204</span>
-<span class="co">#&gt; Astro_7  -26.929270 22.737192  -9.283734  5.49196353  -0.5468533  -9.2309048</span>
-<span class="co">#&gt; Astro_8    3.623534 43.049297   2.819967  8.58044752   0.5732373  14.3488721</span>
-<span class="co">#&gt; Astro_9   -6.424179  8.364242 -17.285076 13.99108122  -9.8496251   0.4578144</span>
-<span class="co">#&gt; Astro_10 -13.739277  7.177173 -15.603102  1.35102342 -23.1042943  -8.7616382</span>
-<span class="co">#&gt;                 PC7        PC8         PC9        PC10      PC11       PC12</span>
-<span class="co">#&gt; Astro_1  -10.945170 -44.402561  38.5559377   3.2067257 17.327982 -26.681797</span>
-<span class="co">#&gt; Astro_2  -10.322907  -9.750835   5.7963463  14.9105868 18.863945 -19.982541</span>
-<span class="co">#&gt; Astro_3  -25.962609  26.856594   1.7243142  11.8447819 -4.081870  -6.815166</span>
-<span class="co">#&gt; Astro_4    1.614386   4.652489   1.9444467  -8.6892624 -9.174388 -15.275692</span>
-<span class="co">#&gt; Astro_5   -6.395116  14.935272  41.9265361  27.9953768 79.229696 -45.585746</span>
-<span class="co">#&gt; Astro_6  -18.469092 -13.629835  -4.3101576  -2.3169966 11.184140 -54.355893</span>
-<span class="co">#&gt; Astro_7  -10.189911  -2.754743 -10.3083662  -8.5507119 -8.640104  -2.308103</span>
-<span class="co">#&gt; Astro_8  -21.905959  10.960815  -0.2921111  -0.4281447 24.805420   4.336109</span>
-<span class="co">#&gt; Astro_9   14.576126  33.184690  41.5434993  13.7442030 44.747804 -69.961570</span>
-<span class="co">#&gt; Astro_10   5.061611  -7.873728  25.2955258 -17.0016917  7.819971 -25.201917</span>
-<span class="co">#&gt;                PC13        PC14       PC15        PC16       PC17        PC18</span>
-<span class="co">#&gt; Astro_1   45.104501 -48.0240744  11.193139 -41.7570369  66.918693 -49.0403255</span>
-<span class="co">#&gt; Astro_2    5.347836   7.7967965  -7.467941   3.1105990 -15.860704  -8.7234022</span>
-<span class="co">#&gt; Astro_3   21.288901 -17.1130392 -10.993106  -6.0275416  23.545123  -3.1657284</span>
-<span class="co">#&gt; Astro_4   -1.124454  -7.4780420 -25.880438 -18.4246816   6.467436   3.4455128</span>
-<span class="co">#&gt; Astro_5   29.473905  22.0708531 -13.038002  -0.5764163   6.462615  16.9884035</span>
-<span class="co">#&gt; Astro_6   25.588713  -1.6654605   8.019053 -18.1343658   0.724255 -13.0715278</span>
-<span class="co">#&gt; Astro_7   24.308587  -0.5837416 -10.638062  -2.5921988  15.800991 -14.2173908</span>
-<span class="co">#&gt; Astro_8    2.228605 -46.9676330 -10.005386   0.7457032  -5.521205   0.4332242</span>
-<span class="co">#&gt; Astro_9  -27.753245 -15.9697725  34.728321  41.5084605 -18.549972 -41.8280577</span>
-<span class="co">#&gt; Astro_10  24.608234 -21.8826645 -11.186041  -7.2195135  24.107763 -15.4921566</span>
-<span class="co">#&gt;                PC19       PC20        PC21         PC22       PC23        PC24</span>
-<span class="co">#&gt; Astro_1   25.756716  14.949057 -165.550685  58.19324535   3.971552  -35.919551</span>
-<span class="co">#&gt; Astro_2   13.488163   5.258273    4.179193  -0.59313919 -10.715812    5.100151</span>
-<span class="co">#&gt; Astro_3   22.291580   5.090032   -1.000575  -0.03331943 -14.405597    6.903352</span>
-<span class="co">#&gt; Astro_4  -19.903703   8.348698   16.030596 -11.57518997 -29.307079   -8.885363</span>
-<span class="co">#&gt; Astro_5   96.242530   2.218215  111.786819  -9.77653680 133.903323 -102.540614</span>
-<span class="co">#&gt; Astro_6  -26.884243  -8.067514    4.437946  40.77426048 -12.311934   14.743937</span>
-<span class="co">#&gt; Astro_7    3.128589   5.620790   -5.526901  24.90601953 -32.169264   -3.669446</span>
-<span class="co">#&gt; Astro_8   -3.363925 -21.630726  -38.113917 -21.16604782 -26.408680   34.121882</span>
-<span class="co">#&gt; Astro_9  -74.101856 -47.492566   19.351205 -52.18627445  64.194685   -8.427584</span>
-<span class="co">#&gt; Astro_10   2.157961  -3.752949   -3.752392  -9.40619662 -16.506670    7.098381</span>
-<span class="co">#&gt;                 PC25        PC26       PC27        PC28       PC29       PC30</span>
-<span class="co">#&gt; Astro_1   12.2415313  -77.594344  26.459120 -144.146903  15.922870 -36.922314</span>
-<span class="co">#&gt; Astro_2   -2.4847800   28.160039  -9.415349  -15.943439  -5.404676  15.032288</span>
-<span class="co">#&gt; Astro_3    5.4286969   19.273602 -22.513322   19.468781  40.972070   6.789793</span>
-<span class="co">#&gt; Astro_4   -4.0985102   12.218397  31.478061   21.257021  12.309293 -12.308150</span>
-<span class="co">#&gt; Astro_5   46.3307641   53.395403 -54.507051   91.163028 -54.728269  17.707532</span>
-<span class="co">#&gt; Astro_6   -0.8277278   -1.493960  25.973804   -7.517135  28.874549  -3.330672</span>
-<span class="co">#&gt; Astro_7   36.6810216   29.333367  18.964009   -1.887803  19.326589 -25.607358</span>
-<span class="co">#&gt; Astro_8    9.4405861   -4.812336 -33.090871   22.310171  11.876256 -43.986844</span>
-<span class="co">#&gt; Astro_9   20.5442717 -164.390523 -20.431029   67.132729 -19.193588  -6.931561</span>
-<span class="co">#&gt; Astro_10 -42.0062922   22.965881  13.999678  -12.877129  20.213294  -2.401655</span>
-<span class="co">#&gt;                PC31       PC32         PC33        PC34         PC35</span>
-<span class="co">#&gt; Astro_1   11.618097 -67.602763  15.86381625 -13.9099083  57.49826894</span>
-<span class="co">#&gt; Astro_2   -3.216248  -6.569684  10.49791817   8.5824778   0.08981318</span>
-<span class="co">#&gt; Astro_3    6.760957 -12.213094 -77.09552839   3.5077153  -9.80013222</span>
-<span class="co">#&gt; Astro_4  -25.709646  26.259940 -10.63577476  21.9575074   9.12524407</span>
-<span class="co">#&gt; Astro_5  -22.489628   5.752171   0.06350494 -40.8582701  51.95548742</span>
-<span class="co">#&gt; Astro_6  -12.351721  51.057563  11.08085425   2.5808381  24.44744537</span>
-<span class="co">#&gt; Astro_7  -29.698826  -6.889033 -33.63829081  -0.6380749 -50.01167180</span>
-<span class="co">#&gt; Astro_8   16.024953  18.006367  48.72904300 -21.5275543  57.30948670</span>
-<span class="co">#&gt; Astro_9   65.910195 -31.787968   2.64708313 -24.5769001 -51.00016353</span>
-<span class="co">#&gt; Astro_10 -45.854922  46.925734 -26.39705430  24.8608701  23.33452007</span>
-<span class="co">#&gt;                 PC36       PC37        PC38       PC39       PC40       PC41</span>
-<span class="co">#&gt; Astro_1  -73.3091492  17.515351   -8.254165  43.912814  -2.004869  -6.178397</span>
-<span class="co">#&gt; Astro_2    3.1808537   2.506483    8.319238  18.089992   2.859924  -4.637560</span>
-<span class="co">#&gt; Astro_3    0.5813502 -14.598447   64.466378  -9.342625 -24.210269   6.783897</span>
-<span class="co">#&gt; Astro_4   23.6506875 -23.162682  -18.269183  34.773606  11.720082 -45.417410</span>
-<span class="co">#&gt; Astro_5   24.8745710  -4.613976  -26.139673  12.461406 -35.056689  72.119065</span>
-<span class="co">#&gt; Astro_6   21.1090900 -13.680119   30.842522  34.750681  35.311829  -4.665801</span>
-<span class="co">#&gt; Astro_7    1.0202313 -24.469285   25.192026 -28.475776  11.258250  35.489630</span>
-<span class="co">#&gt; Astro_8   35.6622923  40.697753 -106.286987  16.646028 -10.295528   6.701428</span>
-<span class="co">#&gt; Astro_9  -22.7428951   4.214638   53.781154 -60.019542  28.410570  -2.950908</span>
-<span class="co">#&gt; Astro_10  25.0397888   8.248680  -44.009790 -40.556042 -63.040996 -30.263540</span>
-<span class="co">#&gt;                PC42        PC43       PC44       PC45       PC46       PC47</span>
-<span class="co">#&gt; Astro_1    7.374313  -3.9800195 -13.824271  34.169467   7.385559 -19.331495</span>
-<span class="co">#&gt; Astro_2   22.355295  35.8941653   3.152409 -17.250922 -22.796020  -1.528162</span>
-<span class="co">#&gt; Astro_3    5.743631   0.4080218  36.070707  37.024948  13.650769  58.696393</span>
-<span class="co">#&gt; Astro_4  -10.825347  23.1306672   2.030874  15.080912  50.032082  32.916104</span>
-<span class="co">#&gt; Astro_5   15.096589 -15.6578353   2.627449 -11.716605 -10.588965 -44.107630</span>
-<span class="co">#&gt; Astro_6   25.683724 -36.5786492  11.233984 -43.873638  11.279174 -41.660551</span>
-<span class="co">#&gt; Astro_7  -45.980579  -8.0133985 -13.741851   8.934705 -67.747619  -1.827107</span>
-<span class="co">#&gt; Astro_8  -18.783855  44.6444695  30.887849 -56.304004  22.052166  26.991542</span>
-<span class="co">#&gt; Astro_9   17.546084 -20.0641244  -9.861440  24.650955  32.163482  41.624173</span>
-<span class="co">#&gt; Astro_10  15.985019  25.7100880  23.296727   5.541981   3.317413 -46.143537</span>
-<span class="co">#&gt;                PC48       PC49        PC50</span>
-<span class="co">#&gt; Astro_1    8.691537  38.465081 -22.8248866</span>
-<span class="co">#&gt; Astro_2   -2.096665 -14.718855  30.5846753</span>
-<span class="co">#&gt; Astro_3   75.930757  -4.040812   2.0213609</span>
-<span class="co">#&gt; Astro_4   -2.617993  33.744993  29.8729652</span>
-<span class="co">#&gt; Astro_5  -15.288867  -7.998699   0.1075625</span>
-<span class="co">#&gt; Astro_6   13.207885  -6.945936 -21.7747188</span>
-<span class="co">#&gt; Astro_7   28.832870   3.121541  48.3499321</span>
-<span class="co">#&gt; Astro_8  -34.432271  18.585436  21.7319841</span>
-<span class="co">#&gt; Astro_9  -46.173315  54.502801  -1.9494657</span>
-<span class="co">#&gt; Astro_10  -7.853815 -62.111505 -80.9541977</span></code></pre></div>
+<span class="co">#&gt;                 PC1       PC2         PC3        PC4         PC5         PC6</span>
+<span class="co">#&gt; Astro_1  -10.407435 30.311847 -22.5629341 36.5584740 -33.7775736 -19.7304115</span>
+<span class="co">#&gt; Astro_2  -13.948605 31.590074   1.9550869 11.3572545  -8.4321704   4.9477636</span>
+<span class="co">#&gt; Astro_3    3.850206 19.358172  -0.7814799  7.0603435   7.6742081 -19.8494032</span>
+<span class="co">#&gt; Astro_4   -4.248179 30.244316 -22.7363104 12.0623614  -8.2891452 -11.7871639</span>
+<span class="co">#&gt; Astro_5   16.831371 23.511698 -22.6999337 15.1539468 -30.1817314 -22.5802352</span>
+<span class="co">#&gt; Astro_6  -11.921279 19.773704 -23.8672011 -2.4116542  -0.5082911  16.2132904</span>
+<span class="co">#&gt; Astro_7  -42.033822 25.723269 -13.3044557  8.6700649  -0.1687997  -3.7151454</span>
+<span class="co">#&gt; Astro_8   -1.586775 43.724343  -1.0921870  9.2344368  -8.7732591  21.7068670</span>
+<span class="co">#&gt; Astro_9  -11.795235  6.848824 -19.0584940 13.5161016 -11.2880546   0.4350785</span>
+<span class="co">#&gt; Astro_10 -18.943309  5.827051 -17.3185268  0.9002096 -24.4671649  -8.7300854</span>
+<span class="co">#&gt;                 PC7         PC8        PC9        PC10       PC11       PC12</span>
+<span class="co">#&gt; Astro_1   -7.984585 -27.2850421 40.4898407 -12.4683371 36.8438925 -25.044087</span>
+<span class="co">#&gt; Astro_2   -6.503074  -7.8691104  7.2866691  13.9309087 19.0944307 -19.202142</span>
+<span class="co">#&gt; Astro_3  -39.924208  24.7410540  0.9181899  12.9421156  0.8667143  -6.059127</span>
+<span class="co">#&gt; Astro_4    7.638606  -0.8670172  2.7685646 -13.3428641 -0.6404104  -9.717211</span>
+<span class="co">#&gt; Astro_5  -15.019907   9.5324223 41.6853110  25.1984624 88.6412150 -43.550740</span>
+<span class="co">#&gt; Astro_6  -21.791739  15.4348070 -1.7602423  -3.6669587  6.1314443 -45.014738</span>
+<span class="co">#&gt; Astro_7   -5.706658   0.2117783 -1.2850604  -5.5594147  1.0744393  -5.489561</span>
+<span class="co">#&gt; Astro_8  -17.027367  15.8467790 -3.8868170   0.8249291 23.6332668   2.192508</span>
+<span class="co">#&gt; Astro_9   18.397323  34.6615322 43.1223835  12.7340965 45.2155622 -69.994032</span>
+<span class="co">#&gt; Astro_10   8.415012  -6.0841057 26.8709603 -17.8697644  8.2184025 -25.241942</span>
+<span class="co">#&gt;                 PC13       PC14       PC15         PC16       PC17         PC18</span>
+<span class="co">#&gt; Astro_1   30.5488981 -19.832298  15.176035 -13.25026339  40.161046 -45.47063646</span>
+<span class="co">#&gt; Astro_2    4.9677408   5.587344  -8.085136   3.32404525 -16.092850 -12.52978998</span>
+<span class="co">#&gt; Astro_3   51.7936564 -51.657969   1.779110  19.63625195  25.945183   4.87117459</span>
+<span class="co">#&gt; Astro_4    0.4748047   1.195655 -16.371041  -0.08746428  -1.723432   0.06318672</span>
+<span class="co">#&gt; Astro_5   60.5717805  -6.264201   5.502505  34.47288292   2.883811  25.04615131</span>
+<span class="co">#&gt; Astro_6   24.4257829  -4.156396  -5.240547 -17.76954476  -5.430265  -5.76173404</span>
+<span class="co">#&gt; Astro_7   19.1868705  -4.808654  -4.623345   7.42484758   9.639565 -26.74954178</span>
+<span class="co">#&gt; Astro_8  -11.4682059 -39.823213  -5.370269 -17.83848257 -11.588587  -4.03282857</span>
+<span class="co">#&gt; Astro_9  -28.3989194 -18.652900  34.213099  41.82333618 -18.806150 -46.16748671</span>
+<span class="co">#&gt; Astro_10  24.5609595 -25.625925 -11.710846  -6.57302100  23.963298 -19.61863059</span>
+<span class="co">#&gt;                 PC19       PC20        PC21       PC22       PC23         PC24</span>
+<span class="co">#&gt; Astro_1   36.5013237  29.133409 -147.773812  50.609524  13.231349  -33.0860364</span>
+<span class="co">#&gt; Astro_2   14.9200266   6.947397    2.327617  -3.055540  -5.841683   -0.2818312</span>
+<span class="co">#&gt; Astro_3   19.6474786  -2.737692  -11.826799   1.306606 -27.898431    7.8595833</span>
+<span class="co">#&gt; Astro_4   -9.3782624  17.133785   12.714137  -4.094519 -17.599942  -18.6750124</span>
+<span class="co">#&gt; Astro_5  101.6416496   2.492772   96.576474  -2.110720 127.350589 -106.5403808</span>
+<span class="co">#&gt; Astro_6  -30.9790072  -8.962693   21.465825  34.144691 -18.986048   27.9645678</span>
+<span class="co">#&gt; Astro_7   -7.2150170  -1.157107   -2.387419   3.988100 -16.752040   -4.9284042</span>
+<span class="co">#&gt; Astro_8    0.5959278 -18.489105  -37.150922 -27.091748 -25.053135   32.3431211</span>
+<span class="co">#&gt; Astro_9  -73.4315606 -46.428528   17.447132 -55.502309  69.319183  -13.8941311</span>
+<span class="co">#&gt; Astro_10   2.3043005  -3.144017   -5.582785 -13.022125 -11.828100    2.0905639</span>
+<span class="co">#&gt;                PC25        PC26       PC27         PC28       PC29       PC30</span>
+<span class="co">#&gt; Astro_1   23.207378  -81.159700   3.123670 -125.4254549  17.713073 -25.593769</span>
+<span class="co">#&gt; Astro_2   -3.116622   23.355518  -2.648275  -13.2722048  -7.868808  13.417807</span>
+<span class="co">#&gt; Astro_3    1.656640    9.438377 -12.339236   -0.4184704  37.315106  -2.026420</span>
+<span class="co">#&gt; Astro_4   -3.738251    7.251080  32.161266   16.0688188   7.518533 -17.882828</span>
+<span class="co">#&gt; Astro_5   44.997384   41.156163 -47.255139   67.7878437 -61.334321   6.393949</span>
+<span class="co">#&gt; Astro_6    6.690753    6.945147  25.033891    6.4540022  36.126717   9.251954</span>
+<span class="co">#&gt; Astro_7   28.869555   -3.126754  18.954968    1.9971946  27.984911  -3.839576</span>
+<span class="co">#&gt; Astro_8    8.913136   -2.769134 -34.613305   26.7575539  14.538132 -38.889568</span>
+<span class="co">#&gt; Astro_9   19.511131 -170.566615 -13.506935   70.5928122 -21.789432  -8.884956</span>
+<span class="co">#&gt; Astro_10 -43.131712   16.572358  21.168282   -9.5334469  17.743781  -4.281269</span>
+<span class="co">#&gt;                PC31       PC32        PC33       PC34       PC35       PC36</span>
+<span class="co">#&gt; Astro_1   -5.383494 -67.576841   6.3743140 -39.550991  54.539831 -75.806604</span>
+<span class="co">#&gt; Astro_2   -5.437974  -5.560946   7.2253130   4.681776  -8.084604  -2.511906</span>
+<span class="co">#&gt; Astro_3    6.488044 -16.510959 -63.7773656   8.697870  -2.357757  -3.707185</span>
+<span class="co">#&gt; Astro_4  -19.772334  20.005601 -14.4534944  19.508707   8.556040  18.653533</span>
+<span class="co">#&gt; Astro_5  -18.839240  -3.218899  13.8237105 -41.847143  63.205373  18.838661</span>
+<span class="co">#&gt; Astro_6  -30.749348  62.880805  10.2614711  -8.060594  10.027033  21.973521</span>
+<span class="co">#&gt; Astro_7  -26.568732  -4.932680 -34.7841550  11.110250 -37.200991  -3.865832</span>
+<span class="co">#&gt; Astro_8   13.113556  12.528108  46.3345667 -19.689475  58.398732  32.150292</span>
+<span class="co">#&gt; Astro_9   63.758573 -30.632289  -0.7665702 -27.907567 -59.547988 -28.387989</span>
+<span class="co">#&gt; Astro_10 -48.263698  48.263217 -29.4797974  21.844788  14.799268  19.487630</span>
+<span class="co">#&gt;                PC37       PC38       PC39         PC40        PC41        PC42</span>
+<span class="co">#&gt; Astro_1   15.110015  -25.67943  46.191736 -16.01844352   0.8030685   0.1086415</span>
+<span class="co">#&gt; Astro_2    1.751413   19.29063  18.690069  -0.03802042  -1.5217193  21.2954030</span>
+<span class="co">#&gt; Astro_3  -12.468171   60.98753   4.130098 -16.80628562   2.7375825   6.1055902</span>
+<span class="co">#&gt; Astro_4  -21.408046  -16.16389  35.796752  10.57829712 -30.8524622  -5.3818658</span>
+<span class="co">#&gt; Astro_5   -2.722436  -31.13480  29.431386 -32.47532599  69.0937243  15.3722272</span>
+<span class="co">#&gt; Astro_6  -16.497739   26.51677  40.982447  34.88948793  -9.1420158  24.8895694</span>
+<span class="co">#&gt; Astro_7  -20.690291   40.92619 -18.277345  -3.38152271  42.8996969 -46.0275614</span>
+<span class="co">#&gt; Astro_8   35.780793 -112.62101   9.558678 -11.66900554   4.5499990 -19.7870181</span>
+<span class="co">#&gt; Astro_9    3.802184   65.64430 -60.402415  25.32931176   0.1461594  16.6543313</span>
+<span class="co">#&gt; Astro_10   7.975291  -32.26963 -40.786766 -65.91429578 -27.4140996  15.1798189</span>
+<span class="co">#&gt;                 PC43       PC44       PC45       PC46       PC47       PC48</span>
+<span class="co">#&gt; Astro_1    5.5488747 -26.714494  36.433645 -11.976745 -22.316875  13.601321</span>
+<span class="co">#&gt; Astro_2   37.0888790   1.085609 -14.583748 -28.227030   5.878683  -4.301332</span>
+<span class="co">#&gt; Astro_3    2.6809894  30.331543  44.588833  15.288464  61.329497  75.227511</span>
+<span class="co">#&gt; Astro_4   15.4519574   5.457485  13.498747  47.169380  18.607234   1.049149</span>
+<span class="co">#&gt; Astro_5  -14.8900683  -2.875456  -5.206395  -8.957903 -41.718832 -12.705931</span>
+<span class="co">#&gt; Astro_6  -30.4101576   1.667190 -51.692586  -2.742523 -40.377547  13.335687</span>
+<span class="co">#&gt; Astro_7    0.2426729  -1.513273   8.713732 -54.865262  -4.436539  11.380089</span>
+<span class="co">#&gt; Astro_8   42.6073107  35.239925 -55.877870  22.982268  25.530570 -41.663973</span>
+<span class="co">#&gt; Astro_9  -18.8355441 -11.979938  28.146681  26.678965  48.872427 -49.040974</span>
+<span class="co">#&gt; Astro_10  27.0800417  20.999465   9.128265  -2.130227 -38.973918 -10.926770</span>
+<span class="co">#&gt;                PC49       PC50</span>
+<span class="co">#&gt; Astro_1   33.307546 -16.978694</span>
+<span class="co">#&gt; Astro_2  -14.891066  30.539209</span>
+<span class="co">#&gt; Astro_3   -1.083900   2.550969</span>
+<span class="co">#&gt; Astro_4   30.148419  27.081945</span>
+<span class="co">#&gt; Astro_5   -2.363755   1.142385</span>
+<span class="co">#&gt; Astro_6  -21.083738 -14.028228</span>
+<span class="co">#&gt; Astro_7   -4.420042  29.066899</span>
+<span class="co">#&gt; Astro_8   18.660856  23.568768</span>
+<span class="co">#&gt; Astro_9   54.639109  -2.724113</span>
+<span class="co">#&gt; Astro_10 -62.110004 -81.772631</span></code></pre></div>
 <p>Finally, using the embedding, you can use UMAP or tSNE to get a projection of all the cells on the 2D plane. If you have the cell-type information, it is possible to color them on the plot.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/plot_embedding.html">plot_embedding</a></span><span class="op">(</span><span class="va">embedding</span>, <span class="st">"UMAP"</span>, cell_type <span class="op">=</span> <span class="va">cell_type</span><span class="op">)</span></code></pre></div>
