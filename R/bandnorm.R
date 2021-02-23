@@ -179,7 +179,8 @@ create_embedding = function(path = NULL, hic_df = NULL, mean_thres = 0, var_thre
 #' This function allows you to calculate and plot the UMAP or tSNE embedding.
 #' @param embedding The PCA embedding obtained from create_embedding.
 #' @param type A string of "tSNE" or "UMAP".
-#' @param cell_type Include the cell type information in the plot. Default is NULL.
+#' @param cell_info Include the cell information in the plot. It should be a matrix or data.frame, and the first column is cell name in the corresponding to the embedding, and the second column is the information. Default is NULL.
+#' @param label A string indicating the name of the cell information you want to include. Default is NULL.
 #' @export
 #' @import umap
 #' @import Rtsne
@@ -190,9 +191,9 @@ create_embedding = function(path = NULL, hic_df = NULL, mean_thres = 0, var_thre
 #' data("cell_type")
 #' bandnorm_result = bandnorm(hic_df = hic_df, save = FALSE)
 #' embedding = create_embedding(hic_df = bandnorm_result, do_harmony = TRUE, batch = batch)
-#' plot_embedding(embedding, "UMAP", cell_type = cell_type)
-plot_embedding = function(embedding, type, cell_type = NULL) {
-  if (is.null(cell_type)){
+#' plot_embedding(embedding, "UMAP", cell_info = cell_type, label = "Cell Type")
+plot_embedding = function(embedding, type, cell_info = NULL, label = NULL) {
+  if (is.null(cell_info)){
     if (type == "tSNE") {
       embedding = Rtsne(embedding)$Y
       embedding = data.frame(embedding)
@@ -208,21 +209,21 @@ plot_embedding = function(embedding, type, cell_type = NULL) {
     }
   } else {
     cell_names = rownames(embedding)
-    colnames(cell_type) = c("cell_name", "cluster")
-    cell_type = data.frame(cell_type)
-    cell_type = cell_type[match(cell_type$cell_name, cell_names), ]$cluster
+    colnames(cell_info) = c("cell_name", "info")
+    cell_info = data.frame(cell_info)
+    cell_info = cell_info[match(cell_info$cell_name, cell_names), ]$info
     if (type == "tSNE") {
       embedding = Rtsne(embedding)$Y
       embedding = data.frame(embedding)
       colnames(embedding) = c("X1", "X2")
-      ggplot(embedding, aes(x = X1, y = X2)) + geom_point(aes(color = cell_type)) +
-        ylab("tSNE 2") + xlab("tSNE 1") + theme_bw(base_size = 15) + labs(color = "Cell Type")
+      ggplot(embedding, aes(x = X1, y = X2)) + geom_point(aes(color = cell_info)) +
+        ylab("tSNE 2") + xlab("tSNE 1") + theme_bw(base_size = 15) + labs(color = label)
     } else {
       embedding = umap(embedding)$layout
       embedding = data.frame(embedding)
       colnames(embedding) = c("X1", "X2")
-      ggplot(embedding, aes(x = X1, y = X2)) + geom_point(aes(color = cell_type)) +
-        ylab("UMAP 2") + xlab("UMAP 1") + theme_bw(base_size = 15) + labs(color = "Cell Type")
+      ggplot(embedding, aes(x = X1, y = X2)) + geom_point(aes(color = cell_info)) +
+        ylab("UMAP 2") + xlab("UMAP 1") + theme_bw(base_size = 15) + labs(color = label)
     }
   }
 }

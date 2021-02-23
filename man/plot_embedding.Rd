@@ -4,14 +4,16 @@
 \alias{plot_embedding}
 \title{Plot tSNE or UMAP embedding}
 \usage{
-plot_embedding(embedding, type, cell_type = NULL)
+plot_embedding(embedding, type, cell_info = NULL, label = NULL)
 }
 \arguments{
 \item{embedding}{The PCA embedding obtained from create_embedding.}
 
 \item{type}{A string of "tSNE" or "UMAP".}
 
-\item{cell_type}{Include the cell type information in the plot. Default is NULL.}
+\item{cell_info}{Include the cell information in the plot. It should be a matrix or data.frame, and the first column is cell name in the corresponding to the embedding, and the second column is the information. Default is NULL.}
+
+\item{label}{A string indicating the name of the cell information you want to include. Default is NULL.}
 }
 \description{
 This function allows you to calculate and plot the UMAP or tSNE embedding.
@@ -22,5 +24,5 @@ data("batch")
 data("cell_type")
 bandnorm_result = bandnorm(hic_df = hic_df, save = FALSE)
 embedding = create_embedding(hic_df = bandnorm_result, do_harmony = TRUE, batch = batch)
-plot_embedding(embedding, "UMAP", cell_type = cell_type)
+plot_embedding(embedding, "UMAP", cell_info = cell_type, label = "Cell Type")
 }

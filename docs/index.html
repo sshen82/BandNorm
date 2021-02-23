@@ -89,7 +89,7 @@
 <a href="#what-is-bandnorm" class="anchor"></a>What is BandNorm?</h2>
 <p>The advent of single-cell sequencing technologies in profiling 3D genome organization led to development of single-cell high-throughput chromatin conformation (scHi-C) assays. Data from these assays enhance our ability to study dynamic chromatin architecture and the impact of spatial genome interactions on cell regulation at an unprecedented resolution. At the individual cell resolution, heterogeneity driven by the stochastic nature of chromatin fiber, various nuclear processes, and unwanted variation due to sequencing depths and batch effects poses major analytical challenges for inferring single cell-level 3D genome organizations.</p>
 <p>To explicitly capture chromatin conformation features and distinguish cells based on their 3D genome organizations, we develop a simple and fast band normalization approach, <code>BandNorm</code>, as well as a deep generative modeling framework, <a href="https://github.com/yezhengSTAT/3DVI">3DVI</a>, for more structured modeling of scHi-C data. <code>BandNorm</code> first removes genomic distance bias within a cell, and sequencing depth normalizes between cells. Consequently, <code>BandNorm</code> adds back a common band-dependent contact decay profile for the contact matrices across cells. The former step is achieved by dividing the interaction frequencies of each band within a cell with the cell’s band mean. The latter step is implemented by multiplying each scaled band by the average band mean across cells.</p>
-<p><img src="https://github.com/sshen82/BandNorm/blob/main/figures/bandnorm_intro.png" alt="BandNorm" width="700px"></p>
+<p><img src="../figures/bandnorm_intro.png" alt="BandNorm" width="700px"></p>
 <p>There are four functions, <code>download_schic</code>, <code>bandnorm</code>, <code>create_embedding</code>, and <code>plot_embedding</code>. <code>download_schic</code> downloads one of the currently available single-cell Hi-C data cleaned by us, <code>bandnorm</code> takes in sparse matrices and normalize them using BandNorm method, <code>create_embedding</code> summarizes the data into a PCA embedding in preparation for clustering and lower dimension embedding, and <code>plot_embedding</code> calculates UMAP or tSNE embedding from the PCA obtained from <code>create_embedding</code>, and plots the resulting embedding. (See vignette (<code>browseVignettes("BandNorm"))</code> or visit <a href="https://sshen82.github.io/BandNorm">BandNorm website</a> for more detail.)</p>
 </div>
 <div id="installation" class="section level2">
@@ -129,8 +129,8 @@ data("batch")
 data("cell_type")
 bandnorm_result = bandnorm(hic_df = hic_df, save = FALSE)
 embedding = create_embedding(hic_df = bandnorm_result, do_harmony = FALSE, batch = batch)
-plot_embedding(embedding, "UMAP", cell_type = cell_type)
-plot_embedding(embedding, "UMAP", cell_type = batch)</a></code></pre>
+plot_embedding(embedding, "UMAP", cell_info = cell_type, label = "Cell Type")
+plot_embedding(embedding, "UMAP", cell_info = batch, label = "Batch")</a></code></pre>
 </div>
 </div>
   </div>

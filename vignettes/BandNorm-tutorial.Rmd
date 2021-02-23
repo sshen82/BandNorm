@@ -20,7 +20,7 @@ The advent of single-cell sequencing technologies in profiling 3D genome organiz
 
 To explicitly capture chromatin conformation features and distinguish cells based on their 3D genome organizations, we develop a simple and fast band normalization approach, `BandNorm`. `BandNorm` first removes genomic distance bias within a cell, and sequencing depth normalizes between cells. Consequently, `BandNorm` adds back a common band-dependent contact decay profile for the contact matrices across cells. The former step is achieved by dividing the interaction frequencies of each band within a cell with the cell’s band mean. The latter step is implemented by multiplying each scaled band by the average band mean across cells.
 
-![The introduction for BandNorm](https://github.com/sshen82/BandNorm/blob/main/figures/bandnorm_intro.png)
+![The introduction for BandNorm](../figures/bandnorm_intro.png)
 
 ## Installation
 
@@ -69,7 +69,7 @@ print(cell_type[1:10, ])
 You can also use `download_schic` function to download real data. The available data includes Kim2020, Li2019, Ramani2017, and Lee2019. You can specify one of the cell-types in those cell lines. There are also summary files available for them, and the summary includes batch, cell-type, depth and sparsity information. You can go to [this website](http://pages.stat.wisc.edu/~sshen82/bandnorm/) for more information.
 
 ```{r download_data, eval = FALSE}
-download_schic("Li2019", cell_type = "2i", getwd(), summary_path = getwd())
+download_schic("Li2019", cell_type = "2i", cell_path = getwd(), summary_path = getwd())
 ```
 
 ## Use BandNorm
@@ -89,9 +89,10 @@ embedding = create_embedding(hic_df = bandnorm_result, do_harmony = TRUE, batch 
 embedding[1:10, ]
 ```
 
-Finally, using the embedding, you can use UMAP or tSNE to get a projection of all the cells on the 2D plane. If you have the cell-type information, it is possible to color them on the plot.
+Finally, using the embedding, you can use UMAP or tSNE to get a projection of all the cells on the 2D plane. If you have the cell-type information or batch information, it is possible to color them on the plot.
 
 ```{r plot_embedding}
-plot_embedding(embedding, "UMAP", cell_type = cell_type)
+plot_embedding(embedding, "UMAP", cell_info = cell_type, label = "Cell Type")
+plot_embedding(embedding, "UMAP", cell_info = batch, label = "Batch")
 ```
 
