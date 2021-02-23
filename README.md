@@ -1,5 +1,7 @@
 # BandNorm
 
+Ye Zheng\*, Siqi Shen\* and Sündüz Keleş. Normalization and De-noising of single-cell Hi-C Data with BandNorm and 3DVI. bioRxiv (2021). * contribute equally.
+
 `BandNorm` is a Normalization method that removes depth effect and aligns distance effect efficiently. 
 Users can input a path of multiple single cells, or a data.frame containing all cells and receive a normalized data.frame file.
 
