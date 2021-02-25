@@ -16,11 +16,11 @@ download_schic = function(cell_line, cell_type = NULL, cell_path, summary_path =
     warning("path for saving the data doesn't exist, will create a path.")
     dir.create(cell_path, recursive = TRUE)
   }
-  if (!dir.exists(summary_path)){
-    warning("path for saving the summary data doesn't exist, will create a path.")
-    dir.create(summary_path, recursive = TRUE)
-  }
   if (!is.null(summary_path)) {
+    if (!dir.exists(summary_path)){
+      warning("path for saving the summary data doesn't exist, will create a path.")
+      dir.create(summary_path, recursive = TRUE)
+    }
     input_summary = paste("http://pages.stat.wisc.edu/~sshen82/bandnorm/Summary/",
                           cell_line, "_Summary.txt", sep = "")
     download.file(input_summary, destfile = paste(summary_path, "/", cell_line,
