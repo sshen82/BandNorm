@@ -1,13 +1,25 @@
 #' Download existing single-cell raw data
 #'
-#' This function allows you to calculate the BandNorm normalization.
+#' This function allows you to download the currently existing single cell Hi-C data. The data is 1mb resolution, and there are basic information for each of the cell, such as cell type, batch, etc.
 #' @param cell_line Must be one of "Kim2020", "Lee2019", "Li2019", "Ramani2017".
 #' @param cell_type If you need to download a specific cell-type from one cell line, indicate the name of the cell-type in here.
 #' @param cell_path Indicate the output path for raw data.
+#' @param summary_path Indicate the output path for summary data containing information of batch, cell type, depth and sparsity. Default is NULL.
 #' @export
 #' @examples
 #' download_schic("Li2019", cell_path = getwd())
 download_schic = function(cell_line, cell_type = NULL, cell_path, summary_path = NULL) {
+  if (!cell_line %in% c("Kim2020", "Lee2019", "Li2019", "Ramani2017")){
+    stop("We currently don't support other cell lines. Please use one of Kim2020, Lee2019, Li2019, Ramani2017.")
+  }
+  if (!dir.exists(cell_path)){
+    warning("path for saving the data doesn't exist, will create a path.")
+    dir.create(cell_path, recursive = TRUE)
+  }
+  if (!dir.exists(summary_path)){
+    warning("path for saving the summary data doesn't exist, will create a path.")
+    dir.create(summary_path, recursive = TRUE)
+  }
   if (!is.null(summary_path)) {
     input_summary = paste("http://pages.stat.wisc.edu/~sshen82/bandnorm/Summary/",
                           cell_line, "_Summary.txt", sep = "")
@@ -51,8 +63,22 @@ download_schic = function(cell_line, cell_type = NULL, cell_path, summary_path =
 #' data("hic_df")
 #' bandnorm_result = bandnorm(hic_df = hic_df, save = FALSE)
 bandnorm = function(path = NULL, hic_df = NULL, save = TRUE, save_path = NULL) {
+  if (is.null(path) && is.null(hic_df)){
+    stop("Please specify one of path or hic_df.")
+  }
+  if (!is.null(path) && !is.null(hic_df)){
+    warning("Specified both path and hic_df. Will use path file as default for saving memory.")
+  }
+  if (save) {
+    if (!dir.exists(save_path)){
+      stop("path for saving the data doesn't exist or is NULL!")
+    }
+  }
   # Get path and name for all the cells in this path.
   if (!is.null(path)){
+    if (!dir.exists(path)){
+      stop("path for data doesn't exist!")
+    }
     paths = list.files(path, recursive = TRUE, full.names = TRUE)
     names = basename(list.files(path, recursive = TRUE))
     # The input format of the cell should be [chr1, bin1, chr2, bin2, count].
@@ -103,13 +129,36 @@ create_embedding = function(path = NULL, hic_df = NULL, mean_thres = 0, var_thre
                             dim_pca = 50, do_harmony = FALSE, batch = NULL) {
   # Function to create embedding for cells, after combining all the bin-pairs from all chromosomes,
   # we do PCA first, and this function returns the PCA embedding.
-
   # There are two options:
   # If using hic_df, the speed will be faster, but is costs more memory, so you can use it if the memory
   # of the computer is sufficient;
   # For path, it means loading the bandnorm normalized data iteratively, so it is slower. However,
   # it won't eat up your memory too much, and the speed is also acceptable.
+  if (is.null(path) && is.null(hic_df)){
+    stop("Please specify one of path or hic_df.")
+  }
+  if (!is.null(path) && !is.null(hic_df)){
+    warning("Specified both path and hic_df. Will use hic_df file as default.")
+  }
+  if (mean_thres < 0 || mean_thres > 1){
+    stop("The threshold for mean should be between 0 and 1.")
+  }
+  if (var_thres < 0 || var_thres > 1){
+    stop("The threshold for variance should be between 0 and 1.")
+  }
   if (is.null(path)) {
+    n = length(unique(hic_df$cell))
+    if (dim_pca > n){
+      stop("The dimension for the PCA embedding should be smaller than the size of the dataset.")
+    }
+    if (!is.null(batch)){
+      if (nrow(batch) != n){
+        stop("The number of cells in batch file is not the same with the cell in path or hic_df.")
+      }
+      if (ncol(batch) != 2){
+        stop("The batch file should only contain two columns, the first is cell names and the second is batch information.")
+      }
+    }
     setDT(hic_df)
     summarized_hic = hic_df[, .(agg_m = mean(BandNorm), agg_v = var(BandNorm)),
                             by = .(chrom, binA, binB)]
@@ -133,6 +182,18 @@ create_embedding = function(path = NULL, hic_df = NULL, mean_thres = 0, var_thre
   } else {
     paths = list.files(path, recursive = TRUE, full.names = TRUE)
     names = basename(list.files(path, recursive = TRUE))
+    n = length(names)
+    if (dim_pca > n){
+      stop("The dimension for the PCA embedding should be smaller than the size of the dataset.")
+    }
+    if (!is.null(batch)){
+      if (nrow(batch) != n){
+        stop("The number of cells in batch file is not the same with the cell in path or hic_df.")
+      }
+      if (ncol(batch) != 2){
+        stop("The batch file should only contain two columns, the first is cell names and the second is batch information.")
+      }
+    }
     cell_names = names
     load_cell = function(i) {
       return(fread(paths[i]) %>% rename(chrom = V1, binA = V2, binB = V4, BandNorm = V5) %>%
@@ -193,6 +254,9 @@ create_embedding = function(path = NULL, hic_df = NULL, mean_thres = 0, var_thre
 #' embedding = create_embedding(hic_df = bandnorm_result, do_harmony = TRUE, batch = batch)
 #' plot_embedding(embedding, "UMAP", cell_info = cell_type, label = "Cell Type")
 plot_embedding = function(embedding, type, cell_info = NULL, label = NULL) {
+  if (!type %in% c("UMAP", "tSNE")){
+    stop("We currently only support for UMAP or tSNE embedding.")
+  }
   if (is.null(cell_info)){
     if (type == "tSNE") {
       embedding = Rtsne(embedding)$Y
@@ -208,6 +272,16 @@ plot_embedding = function(embedding, type, cell_info = NULL, label = NULL) {
         xlab("UMAP 1") + theme_bw(base_size = 15)
     }
   } else {
+    if (nrow(cell_info) != nrow(embedding)){
+      stop("The number of cells in batch file is not the same with the number of cells the embedding.")
+    }
+    if (ncol(cell_info) != 2){
+      stop("The batch file should only contain two columns, the first is cell names and the second is batch information.")
+    }
+    if (is.null(label)){
+      warning("The label is empty. Will substitute with the default 'cell information'")
+      label = "cell information"
+    }
     cell_names = rownames(embedding)
     colnames(cell_info) = c("cell_name", "info")
     cell_info = data.frame(cell_info)

@@ -45,9 +45,22 @@ devtools::install_github('sshen82/BandNorm', build_vignettes = TRUE)
 
 There are two possible ways to input the data:
 
-1. A path containing all cells in the form of [chr1, binA, chr2, binB, count],
+1. A path containing all cells in the form of [chr1, binA, chr2, binB, count], the cell looks like below:
 
-2. An R data.frame in the form of [chr1, binA, binB, count, diag, cell_name]. The column names should be c("chrom", "binA", "binB", "count", "diag", "cell")
+```
+chr1    0       chr1    1000000 9
+chr1    1000000 chr1    1000000 200
+chr1    0       chr1    2000000 2
+chr1    1000000 chr1    2000000 4
+chr1    2000000 chr1    2000000 220
+chr1    1000000 chr1    3000000 1
+chr1    2000000 chr1    3000000 11
+chr1    3000000 chr1    3000000 197
+chr1    1000000 chr1    4000000 1
+chr1    2000000 chr1    4000000 2
+```
+
+2. An R data.frame in the form of [chr1, binA, binB, count, diag, cell_name]. The column names should be c("chrom", "binA", "binB", "count", "diag", "cell"). Below we print the example data.
 
 ```{r load_packages}
 library(BandNorm)
@@ -66,7 +79,7 @@ print(cell_type[1:10, ])
 
 ## Download existing single-cell Hi-C data
 
-You can also use `download_schic` function to download real data. The available data includes Kim2020, Li2019, Ramani2017, and Lee2019. You can specify one of the cell-types in those cell lines. There are also summary files available for them, and the summary includes batch, cell-type, depth and sparsity information. You can go to [this website](http://pages.stat.wisc.edu/~sshen82/bandnorm/) for more information.
+You can also use `download_schic` function to download real data. The available data includes [Kim2020](https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1008173), [Li2019](https://www.nature.com/articles/s41592-019-0502-z), [Ramani2017](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5330809/), and [Lee2019](https://www.nature.com/articles/s41592-019-0547-z). You can specify one of the cell-types in those cell lines. There are also summary files available for them, and the summary includes batch, cell-type, depth and sparsity information. You can go to [this website](http://pages.stat.wisc.edu/~sshen82/bandnorm/) for more information.
 
 ```{r download_data, eval = FALSE}
 download_schic("Li2019", cell_type = "2i", cell_path = getwd(), summary_path = getwd())
@@ -74,7 +87,7 @@ download_schic("Li2019", cell_type = "2i", cell_path = getwd(), summary_path = g
 
 ## Use BandNorm
 
-After obtaining the hic_df file, you can use the `bandnorm` function to normalize the data. The result consists of 6 columns: chromosome, binA, binB, diag (which is binB - binA), cell (which is the name of the cell), and BandNorm. You can use the save option to save the normalized file, and if so, you need to give a path for output.
+We provide a demo scHi-C data named hic_df, sampled 400 cells of Astro, ODC, MG, Sst, four cell types and chromosome 1 from [Ecker2019](https://www.nature.com/articles/s41592-019-0547-z) for test run. After obtaining the hic_df file, you can use the `bandnorm` function to normalize the data. The result consists of 6 columns: chromosome, binA, binB, diag (which is binB - binA), cell (which is the name of the cell), and BandNorm. You can use the save option to save the normalized file, and if so, you need to give a path for output.
 
 ```{r BandNorm}
 bandnorm_result = bandnorm(hic_df = hic_df, save = FALSE)

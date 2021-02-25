@@ -12,9 +12,11 @@ download_schic(cell_line, cell_type = NULL, cell_path, summary_path = NULL)
 \item{cell_type}{If you need to download a specific cell-type from one cell line, indicate the name of the cell-type in here.}
 
 \item{cell_path}{Indicate the output path for raw data.}
+
+\item{summary_path}{Indicate the output path for summary data containing information of batch, cell type, depth and sparsity. Default is NULL.}
 }
 \description{
-This function allows you to calculate the BandNorm normalization.
+This function allows you to download the currently existing single cell Hi-C data. The data is 1mb resolution, and there are basic information for each of the cell, such as cell type, batch, etc.
 }
 \examples{
 download_schic("Li2019", cell_path = getwd())
