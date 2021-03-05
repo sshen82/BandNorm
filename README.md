@@ -8,7 +8,7 @@ The advent of single-cell sequencing technologies in profiling 3D genome organiz
 
 To explicitly capture chromatin conformation features and distinguish cells based on their 3D genome organizations, we develop a simple and fast band normalization approach, `BandNorm`, as well as a deep generative modeling framework, [3DVI](https://github.com/yezhengSTAT/3DVI), for more structured modeling of scHi-C data. `BandNorm` first removes genomic distance bias within a cell, and sequencing depth normalizes between cells. Consequently, `BandNorm` adds back a common band-dependent contact decay profile for the contact matrices across cells. The former step is achieved by dividing the interaction frequencies of each band within a cell with the cell’s band mean. The latter step is implemented by multiplying each scaled band by the average band mean across cells.
 
-<img src="https://github.com/sshen82/BandNorm/blob/main/figures/bandnorm_intro.png" alt="BandNorm" width="700px">
+<img src="../figures/bandnorm_intro.png" alt="BandNorm" width="700px">
 
 There are four functions, `download_schic`, `bandnorm`, `create_embedding`, and `plot_embedding`.
 `download_schic` downloads one of the currently available single-cell Hi-C data cleaned by us,

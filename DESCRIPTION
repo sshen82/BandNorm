@@ -20,10 +20,11 @@ Depends:
     dplyr,
     data.table,
     Rtsne,
-    harmony,
     umap
 RoxygenNote: 7.1.1
 Suggests: 
     knitr,
     rmarkdown
 VignetteBuilder: knitr
+biocViews:
+    harmony
