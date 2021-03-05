@@ -40,7 +40,7 @@ download_schic = function(cell_line, cell_type = NULL, cell_path, summary_path =
     list_files = fread(paste(cell_path, "/", cell_line, "_", cell_type, "_list.txt", sep = ""), header = FALSE)
   }
   for (i in list_files$V1){
-    download.file(i, destfile = paste(cell_path, basename(i), sep = ""))
+    download.file(i, destfile = paste(cell_path, "/", basename(i), sep = ""))
   }
   if (is.null(cell_type)) {
     file.remove(paste(cell_path, "/", cell_line, "_list.txt", sep = ""))
@@ -70,8 +70,12 @@ bandnorm = function(path = NULL, hic_df = NULL, save = TRUE, save_path = NULL) {
     warning("Specified both path and hic_df. Will use path file as default for saving memory.")
   }
   if (save) {
+    if (is.null(save_path)){
+      stop("path for saving the data is NULL!")
+    }
     if (!dir.exists(save_path)){
-      stop("path for saving the data doesn't exist or is NULL!")
+      warning("path for saving the data doesn't exist, will create one according to the directory.")
+      dir.create(save_path, recursive = TRUE)
     }
   }
   # Get path and name for all the cells in this path.
@@ -239,7 +243,7 @@ create_embedding = function(path = NULL, hic_df = NULL, mean_thres = 0, var_thre
 #'
 #' This function allows you to calculate and plot the UMAP or tSNE embedding.
 #' @param embedding The PCA embedding obtained from create_embedding.
-#' @param type A string of "tSNE" or "UMAP".
+#' @param type A string of "tSNE" or "UMAP". Default is "UMAP".
 #' @param cell_info Include the cell information in the plot. It should be a matrix or data.frame, and the first column is cell name in the corresponding to the embedding, and the second column is the information. Default is NULL.
 #' @param label A string indicating the name of the cell information you want to include. Default is NULL.
 #' @export
@@ -253,7 +257,7 @@ create_embedding = function(path = NULL, hic_df = NULL, mean_thres = 0, var_thre
 #' bandnorm_result = bandnorm(hic_df = hic_df, save = FALSE)
 #' embedding = create_embedding(hic_df = bandnorm_result, do_harmony = TRUE, batch = batch)
 #' plot_embedding(embedding, "UMAP", cell_info = cell_type, label = "Cell Type")
-plot_embedding = function(embedding, type, cell_info = NULL, label = NULL) {
+plot_embedding = function(embedding, type = "UMAP", cell_info = NULL, label = NULL) {
   if (!type %in% c("UMAP", "tSNE")){
     stop("We currently only support for UMAP or tSNE embedding.")
   }
@@ -285,7 +289,7 @@ plot_embedding = function(embedding, type, cell_info = NULL, label = NULL) {
     cell_names = rownames(embedding)
     colnames(cell_info) = c("cell_name", "info")
     cell_info = data.frame(cell_info)
-    cell_info = cell_info[match(cell_info$cell_name, cell_names), ]$info
+    cell_info = cell_info[match(cell_names, cell_info$cell_name), ]$info
     if (type == "tSNE") {
       embedding = Rtsne(embedding)$Y
       embedding = data.frame(embedding)
