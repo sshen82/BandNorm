@@ -176,9 +176,10 @@ create_embedding = function(path = NULL, hic_df = NULL, mean_thres = 0, var_thre
     for (i in 1:length(cell_names)) {
       output_cell = summarized_hic
       output_cell$BandNorm = 0
-      temp = hic_df %>% filter(diag > 0, cell == cell_names[i], chrom %in%
-                                         summarized_hic$chrom, binA %in% summarized_hic$binA, binB %in%
-                                         summarized_hic$binB)
+      temp = hic_df[cell == cell_names[i], ]
+      temp = temp %>% filter(diag > 0, chrom %in% summarized_hic$chrom,
+                             binA %in% summarized_hic$binA,
+                             binB %in% summarized_hic$binB)
       setDT(output_cell)
       setDT(temp)
       output_cell = output_cell[temp, `:=`(BandNorm, i.BandNorm), on = .(chrom,
@@ -210,11 +211,10 @@ create_embedding = function(path = NULL, hic_df = NULL, mean_thres = 0, var_thre
       summarized_hic = bind_rows(summarized_hic, load_cell(i)) %>% group_by(chrom,
                                                                             binA, binB, diag) %>% summarise_all(sum)
     }
-    summarized_hic = summarized_hic %>% mutate(agg_v = (BandNorm_s - BandNorm^2/length(paths))/(length(paths) -
-                                                                                                  1)) %>% rename(agg_m = BandNorm)
-    summarized_hic = summarized_hic %>% filter(diag > 0, agg_m >= quantile(agg_m,
-                                                                           mean_thres), agg_v >= quantile(agg_v, var_thres)) %>% select(chrom, binA,
-                                                                                                                                        binB)
+    summarized_hic = summarized_hic %>% mutate(agg_v = (BandNorm_s - BandNorm^2/length(paths))/(length(paths) - 1)) %>%
+      rename(agg_m = BandNorm)
+    summarized_hic = summarized_hic %>% filter(diag > 0, agg_m >= quantile(agg_m, mean_thres), agg_v >= quantile(agg_v, var_thres)) %>%
+      select(chrom, binA, binB)
     input_mat = matrix(0, nrow = length(names), ncol = nrow(summarized_hic))
     for (i in 1:length(paths)) {
       output_cell = summarized_hic
