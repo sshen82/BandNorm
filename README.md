@@ -31,11 +31,19 @@ library(devtools)
 install_github("immunogenomics/harmony")
 ```
 
-`BandNorm` can be installed from Github:
+`BandNorm` can also automatically install those packages when being installed from Github:
 
 ```
 devtools::install_github('sshen82/BandNorm', build_vignettes = TRUE)
 library(BandNorm)
+```
+
+Note that for Harmony, it is possible to meet the error: "ERROR: lazy loading failed for package 'harmony'", the solution that works for me is to include below before installing Harmony (or BandNorm). 
+
+```
+Sys.setenv(R_REMOTES_NO_ERRORS_FROM_WARNINGS="true")
+#install_github("immunogenomics/harmony")
+devtools::install_github('sshen82/BandNorm', build_vignettes = TRUE)
 ```
 
 ## Input
