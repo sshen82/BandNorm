@@ -20,7 +20,8 @@ Depends:
     dplyr,
     data.table,
     Rtsne,
-    umap
+    umap,
+    progress
 RoxygenNote: 7.1.1
 Suggests: 
     knitr,

@@ -23,29 +23,31 @@ download_schic = function(cell_line, cell_type = NULL, cell_path, summary_path =
     }
     input_summary = paste("http://pages.stat.wisc.edu/~sshen82/bandnorm/Summary/",
                           cell_line, "_Summary.txt", sep = "")
-    download.file(input_summary, destfile = paste(summary_path, "/", cell_line,
-                                                  "_Summary.txt", sep = ""))
+    invisible(download.file(input_summary, destfile = paste(summary_path, "/", cell_line,
+                                                  "_Summary.txt", sep = ""), quiet = TRUE))
   }
   if (is.null(cell_type)) {
     input = paste("http://pages.stat.wisc.edu/~sshen82/bandnorm/Summary/", cell_line,
                   "_list.txt", sep = "")
-    download.file(input, destfile = paste(cell_path, "/", cell_line,
-                                          "_list.txt", sep = ""))
+    invisible(download.file(input, destfile = paste(cell_path, "/", cell_line,
+                                          "_list.txt", sep = ""), quiet = TRUE))
     list_files = fread(paste(cell_path, "/", cell_line, "_list.txt", sep = ""), header = FALSE)
   } else {
     input = paste("http://pages.stat.wisc.edu/~sshen82/bandnorm/Summary/", cell_line,
                   "_", cell_type, "_list.txt", sep = "")
-    download.file(input, destfile = paste(cell_path, "/", cell_line,
-                                          "_", cell_type, "_list.txt", sep = ""))
+    invisible(download.file(input, destfile = paste(cell_path, "/", cell_line,
+                                          "_", cell_type, "_list.txt", sep = ""), quiet = TRUE))
     list_files = fread(paste(cell_path, "/", cell_line, "_", cell_type, "_list.txt", sep = ""), header = FALSE)
   }
+  pb = progress_bar$new(total = length(list_files$V1))
   for (i in list_files$V1){
-    download.file(i, destfile = paste(cell_path, "/", basename(i), sep = ""))
+    pb$tick()
+    invisible(download.file(i, destfile = paste(cell_path, "/", basename(i), sep = ""), quiet = TRUE))
   }
   if (is.null(cell_type)) {
-    file.remove(paste(cell_path, "/", cell_line, "_list.txt", sep = ""))
+    invisible(file.remove(paste(cell_path, "/", cell_line, "_list.txt", sep = "")))
   } else {
-    file.remove(paste(cell_path, "/", cell_line, "_", cell_type, "_list.txt", sep = ""))
+    invisible(file.remove(paste(cell_path, "/", cell_line, "_", cell_type, "_list.txt", sep = "")))
   }
 }
 
