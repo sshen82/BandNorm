@@ -41,6 +41,12 @@ BandNorm can be installed from Github:
 devtools::install_github('sshen82/BandNorm', build_vignettes = TRUE)
 ```
 
+Also, if the user doesn't have default R path writing permission, it is possible to install the package to the personal library:
+
+```{r install-BandNorm-no-permission, eval = FALSE}
+withr::with_libpaths("personalLibraryPath", devtools::install_github("sshen82/BandNorm"))
+```
+
 ## Format of input
 
 There are two possible ways to input the data:

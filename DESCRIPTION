@@ -21,11 +21,13 @@ Depends:
     data.table,
     Rtsne,
     umap,
-    progress
+    progress,
+    harmony
 RoxygenNote: 7.1.1
 Suggests: 
     knitr,
     rmarkdown
 VignetteBuilder: knitr
-biocViews:
+Imports: 
     harmony
+Remotes: immunogenomics/harmony

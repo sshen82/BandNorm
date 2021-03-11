@@ -4,12 +4,12 @@
 \alias{plot_embedding}
 \title{Plot tSNE or UMAP embedding}
 \usage{
-plot_embedding(embedding, type, cell_info = NULL, label = NULL)
+plot_embedding(embedding, type = "UMAP", cell_info = NULL, label = NULL)
 }
 \arguments{
 \item{embedding}{The PCA embedding obtained from create_embedding.}
 
-\item{type}{A string of "tSNE" or "UMAP".}
+\item{type}{A string of "tSNE" or "UMAP". Default is "UMAP".}
 
 \item{cell_info}{Include the cell information in the plot. It should be a matrix or data.frame, and the first column is cell name in the corresponding to the embedding, and the second column is the information. Default is NULL.}
 
