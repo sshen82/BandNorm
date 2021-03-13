@@ -49,7 +49,7 @@ withr::with_libpaths("personalLibraryPath", devtools::install_github("sshen82/Ba
 
 ## Format of input
 
-There are two possible ways to input the data:
+There are three possible ways to input the data:
 
 1. A path containing all cells in the form of [chr1, binA, chr2, binB, count], the cell looks like below:
 
@@ -73,6 +73,8 @@ library(BandNorm)
 data(hic_df)
 print(hic_df[1:10, ])
 ```
+
+3. We also support using Juicer .hic format, and you can use bandnorm_juicer function to run it. We will have a thorough example for this in the future.
 
 For the example dataset, we also have batch information and cell-type information. Note that the cell_name in those external information should be consistent with the hic_df file.
 

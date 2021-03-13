@@ -112,6 +112,74 @@ bandnorm = function(path = NULL, hic_df = NULL, save = TRUE, save_path = NULL) {
   return(hic_df)
 }
 
+#' Juicer hic version of BandNorm
+#'
+#' This function allows you to calculate the BandNorm normalization using the inputs that are Juicer .hic format, and the output won't be different from the original version.
+#' @param path The path for all the cells in a directory. There can be sub-directories.
+#' @param save Whether to save each normalized cells. Default is TRUE. Note that if don't have large memory on your computer, and you need to use create_embedding function, it is highly recommended to save the cells because it helps lower the cost of memory in this function.
+#' @param save_path Indicate the output path for normalized cells. Only need it when "save" parameter is TRUE. Default is NULL.
+#' @param resolution Specify the resolution from the hic file.
+#' @param pairs Specify the pairs of chromosomes to use, the format is like "1_1" or "chr1_chr1". If the input is "all_all", it will include all the intra-chromosomal bin pairs.
+#' @export
+#' @import data.table
+#' @import dplyr
+#' @examples
+#' # We will have a thorough example for this part!
+bandnorm_juicer = function(path = NULL, resolution, pairs, save = TRUE, save_path = NULL) {
+  if (is.null(path)){
+    stop("Please specify the path.")
+  }
+  if (save) {
+    if (is.null(save_path)){
+      stop("path for saving the data is NULL!")
+    }
+    if (!dir.exists(save_path)){
+      warning("path for saving the data doesn't exist, will create one according to the directory.")
+      dir.create(save_path, recursive = TRUE)
+    }
+  }
+  if (all(pairs == "all_all")){
+    pairs = paste(readJuicerInformation(remoteFilePath)$chromosomeSizes$chromosome,
+                  readJuicerInformation(remoteFilePath)$chromosomeSizes$chromosome, sep = "_")
+  }
+  # Get path and name for all the cells in this path.
+  if (!dir.exists(path)){
+    stop("path for data doesn't exist!")
+  }
+  paths = list.files(path, recursive = TRUE, full.names = TRUE)
+  names = basename(list.files(path, recursive = TRUE))
+  names = gsub(".hic", ".txt", names)
+  load_cell = function(i) {
+    cell = readJuicer(file = paths[i], pairs = pairs, unit = "BP", resolution = 1000000)
+    chr = strsplit(pairs, split = "_")
+    clean_cell = function(k) {
+      return(as.data.frame(datRemote$contact[[pairs[k]]]) %>%
+               mutate(chromA = rep(paste("chr", chr[[k]][1], sep = ""),
+                                 nrow(datRemote$contact[[pairs[k]]]))) %>%
+               select(chromA, x, y, counts) %>% rename(chrom = chromA, binA = x, binB = y, count = counts))
+    }
+    return(rbindlist(lapply(1:length(chr), clean_cell)) %>%
+      mutate(diag = abs(binB - binA), cell = names[i]))
+  }
+  hic_df = rbindlist(lapply(1:length(paths), load_cell))
+  # Calculate band depth and the mean of band depth for bandnorm.
+  band_info <- hic_df %>% group_by(chrom, diag, cell) %>% summarise(band_depth = sum(count))
+  alpha_j <- band_info %>% group_by(chrom, diag) %>% summarise(depth = mean(band_depth))
+
+  hic_df <- hic_df %>% left_join(alpha_j, by = c("chrom", "diag")) %>% left_join(band_info,
+                                                                                 by = c("chrom", "diag", "cell")) %>% mutate(BandNorm = ifelse(diag == 0,
+                                                                                 count, count/band_depth * depth)) %>% select(-c(band_depth, depth, count))
+  if (save) {
+    save_path = file.path(save_path, unique(names))
+    for (i in 1:length(unique(names))) {
+      write.table(hic_df[cell == unique(names)[i], c("chrom", "binA", "chrom",
+                                                     "binB", "BandNorm")], file = save_path[i], col.names = FALSE, row.names = FALSE,
+                  quote = FALSE, sep = "\t")
+    }
+  }
+  return(hic_df)
+}
+
 #' Create PCA embedding
 #'
 #' This function allows you to obtain the PCA embedding for tSNE or UMAP plotting.
