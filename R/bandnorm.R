@@ -112,7 +112,7 @@ bandnorm = function(path = NULL, hic_df = NULL, save = TRUE, save_path = NULL) {
   return(hic_df)
 }
 
-#' Juicer hic version of BandNorm
+#' Juicer .hic version of BandNorm
 #'
 #' This function allows you to calculate the BandNorm normalization using the inputs that are Juicer .hic format, and the output won't be different from the original version.
 #' @param path The path for all the cells in a directory. There can be sub-directories.
