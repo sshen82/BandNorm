@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Articles • BandNorm</title>
+<title>Juicer hic version of BandNorm — bandnorm_juicer • BandNorm</title>
 
 
 <!-- jquery -->
@@ -39,7 +39,8 @@
 
 
 
-<meta property="og:title" content="Articles" />
+<meta property="og:title" content="Juicer hic version of BandNorm — bandnorm_juicer" />
+<meta property="og:description" content="This function allows you to calculate the BandNorm normalization using the inputs that are Juicer .hic format, and the output won't be different from the original version." />
 
 
 
@@ -68,7 +69,7 @@
   </head>
 
   <body data-spy="scroll" data-target="#toc">
-    <div class="container template-article-index">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -124,18 +125,51 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Articles</h1>
+    <h1>Juicer hic version of BandNorm</h1>
+    
+    <div class="hidden name"><code>bandnorm_juicer.Rd</code></div>
     </div>
 
-    <div class="section ">
-      <h3>All vignettes</h3>
-      <p class="section-desc"></p>
-
-      <dl>
-        <dt><a href="BandNorm-tutorial.html">BandNorm-tutorial</a></dt>
-        <dd></dt>
-      </dl>
+    <div class="ref-description">
+    <p>This function allows you to calculate the BandNorm normalization using the inputs that are Juicer .hic format, and the output won't be different from the original version.</p>
     </div>
+
+    <pre class="usage"><span class='fu'>bandnorm_juicer</span><span class='op'>(</span>path <span class='op'>=</span> <span class='cn'>NULL</span>, <span class='va'>resolution</span>, <span class='va'>pairs</span>, save <span class='op'>=</span> <span class='cn'>TRUE</span>, save_path <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
+
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>path</th>
+      <td><p>The path for all the cells in a directory. There can be sub-directories.</p></td>
+    </tr>
+    <tr>
+      <th>resolution</th>
+      <td><p>Specify the resolution from the hic file.</p></td>
+    </tr>
+    <tr>
+      <th>pairs</th>
+      <td><p>Specify the pairs of chromosomes to use, the format is like "1_1" or "chr1_chr1". If the input is "all_all", it will include all the intra-chromosomal bin pairs.</p></td>
+    </tr>
+    <tr>
+      <th>save</th>
+      <td><p>Whether to save each normalized cells. Default is TRUE. Note that if don't have large memory on your computer, and you need to use create_embedding function, it is highly recommended to save the cells because it helps lower the cost of memory in this function.</p></td>
+    </tr>
+    <tr>
+      <th>save_path</th>
+      <td><p>Indicate the output path for normalized cells. Only need it when "save" parameter is TRUE. Default is NULL.</p></td>
+    </tr>
+    </table>
+
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='co'># We will have a thorough example for this part!</span>
+</div></pre>
+  </div>
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 

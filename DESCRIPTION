@@ -1,7 +1,7 @@
 Package: BandNorm
 Type: Package
 Title: BandNorm Method for single-cell Hi-C
-Version: 0.0.1
+Version: 0.0.2
 Author:
     Ye Zheng <yezheng.stat@gmail.com> 
     Siqi Shen <sshen82@wisc.edu>
@@ -22,12 +22,16 @@ Depends:
     Rtsne,
     umap,
     progress,
-    harmony
+    harmony,
+    FreeHiCLite
 RoxygenNote: 7.1.1
 Suggests: 
     knitr,
     rmarkdown
 VignetteBuilder: knitr
 Imports: 
-    harmony
-Remotes: immunogenomics/harmony
+    harmony,
+    FreeHiCLite
+Remotes: 
+    immunogenomics/harmony,
+    baconzhou/FreeHiCLite
