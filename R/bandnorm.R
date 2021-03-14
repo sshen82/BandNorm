@@ -138,15 +138,15 @@ bandnorm_juicer = function(path = NULL, resolution, pairs, save = TRUE, save_pat
       dir.create(save_path, recursive = TRUE)
     }
   }
-  if (all(pairs == "all_all")){
-    pairs = paste(readJuicerInformation(remoteFilePath)$chromosomeSizes$chromosome,
-                  readJuicerInformation(remoteFilePath)$chromosomeSizes$chromosome, sep = "_")
-  }
   # Get path and name for all the cells in this path.
   if (!dir.exists(path)){
     stop("path for data doesn't exist!")
   }
   paths = list.files(path, recursive = TRUE, full.names = TRUE)
+  if (all(pairs == "all_all")){
+    pairs = paste(readJuicerInformation(paths[1])$chromosomeSizes$chromosome,
+                  readJuicerInformation(paths[1])$chromosomeSizes$chromosome, sep = "_")
+  }
   names = basename(list.files(path, recursive = TRUE))
   names = gsub(".hic", ".txt", names)
   load_cell = function(i) {
