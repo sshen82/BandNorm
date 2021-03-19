@@ -23,7 +23,9 @@ Depends:
     umap,
     progress,
     harmony,
-    FreeHiCLite
+    FreeHiCLite,
+    Matrix,
+    irlba
 RoxygenNote: 7.1.1
 Suggests: 
     knitr,

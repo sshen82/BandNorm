@@ -240,7 +240,7 @@ create_embedding = function(path = NULL, hic_df = NULL, mean_thres = 0, var_thre
     summarized_hic = summarized_hic %>% filter(binA - binB != 0, agg_m >= quantile(agg_m,
                      mean_thres), agg_v >= quantile(agg_v, var_thres)) %>% select(chrom, binA, binB)
     cell_names = unique(hic_df$cell)
-    input_mat = matrix(0, nrow = length(cell_names), ncol = nrow(summarized_hic))
+    input_mat = sparseMatrix(i = 1, j = 1, x = 0, dims = c(length(cell_names), nrow(summarized_hic)))
     for (i in 1:length(cell_names)) {
       output_cell = summarized_hic
       output_cell$BandNorm = 0
@@ -296,7 +296,7 @@ create_embedding = function(path = NULL, hic_df = NULL, mean_thres = 0, var_thre
       input_mat[i, ] = output_cell$BandNorm
     }
   }
-  pca_mat = prcomp(input_mat)$x[, 1:dim_pca]
+  pca_mat = prcomp_irlba(input_mat, n = dim_pca)$x
   # Whether to use Harmony to clean the PCA embedding.
   if (do_harmony) {
     colnames(batch) = c("cell_name", "batch")
