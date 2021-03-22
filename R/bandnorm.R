@@ -296,7 +296,7 @@ create_embedding = function(path = NULL, hic_df = NULL, mean_thres = 0, var_thre
       input_mat[i, ] = output_cell$BandNorm
     }
   }
-  pca_mat = fast.prcomp(input_mat, n = dim_pca)$x
+  pca_mat = fast.prcomp(input_mat)$x[, 1:dim_pca]
   # Whether to use Harmony to clean the PCA embedding.
   if (do_harmony) {
     colnames(batch) = c("cell_name", "batch")
