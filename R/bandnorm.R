@@ -190,7 +190,7 @@ bandnorm_juicer = function(path = NULL, resolution, pairs, save = TRUE, save_pat
 #' @param dim_pca Dimension of PCA embedding to be outputted. Default is 50.
 #' @param do_harmony Whether to use Harmony to remove the batch effect from the embedding. Default is FALSE
 #' @param batch The batch information used for Harmony to remove the batch effect. Required if do_harmony is TRUE.
-#' @param band_select Choose how faraway the band you need. Default is "all", and it can range from 1 to the number of bins.
+#' @param band_select Choose how faraway the band you need. Default is "all", and it can range from 1 to the number of bins times the resolution.
 #' @export
 #' @import data.table
 #' @import dplyr
@@ -240,15 +240,15 @@ create_embedding = function(path = NULL, hic_df = NULL, mean_thres = 0, var_thre
     summarized_hic[is.na(agg_v), "agg_v"] = 0
     if (band_select == "all"){
       summarized_hic = summarized_hic %>%
-        filter(binA - binB != 0, agg_m >= quantile(agg_m, mean_thres),
+        filter(binA - binB != 0, agg_m > quantile(agg_m, mean_thres),
                agg_v >= quantile(agg_v, var_thres)) %>% select(chrom, binA, binB)
     }else {
       summarized_hic = summarized_hic %>%
-        filter(binA - binB != 0, abs(binA - binB) <= band_select, agg_m >= quantile(agg_m, mean_thres),
-               agg_v >= quantile(agg_v, var_thres)) %>% select(chrom, binA, binB)
+        filter(binA - binB != 0, abs(binA - binB) <= band_select, agg_m > quantile(agg_m, mean_thres),
+               agg_v > quantile(agg_v, var_thres)) %>% select(chrom, binA, binB)
     }
     cell_names = unique(hic_df$cell)
-    input_mat = sparseMatrix(i = 1, j = 1, x = 0, dims = c(length(cell_names), nrow(summarized_hic)))
+    input_mat = matrix(0, nrow = length(cell_names), ncol = nrow(summarized_hic))
     print(paste("The number of features is", nrow(summarized_hic)))
     for (i in 1:length(cell_names)) {
       output_cell = summarized_hic
@@ -296,10 +296,10 @@ create_embedding = function(path = NULL, hic_df = NULL, mean_thres = 0, var_thre
                agg_v >= quantile(agg_v, var_thres)) %>% select(chrom, binA, binB)
     }else {
       summarized_hic = summarized_hic %>%
-        filter(diag > 0, diag <= band_select, agg_m >= quantile(agg_m, mean_thres),
-               agg_v >= quantile(agg_v, var_thres)) %>% select(chrom, binA, binB)
+        filter(diag > 0, diag <= band_select, agg_m > quantile(agg_m, mean_thres),
+               agg_v > quantile(agg_v, var_thres)) %>% select(chrom, binA, binB)
     }
-    input_mat = sparseMatrix(i = 1, j = 1, x = 0, dims = c(length(cell_names), nrow(summarized_hic)))
+    input_mat = matrix(0, nrow = length(cell_names), ncol = nrow(summarized_hic))
     print(paste("The number of features is", nrow(summarized_hic)))
     for (i in 1:length(paths)) {
       output_cell = summarized_hic

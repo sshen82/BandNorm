@@ -30,7 +30,7 @@ create_embedding(
 
 \item{batch}{The batch information used for Harmony to remove the batch effect. Required if do_harmony is TRUE.}
 
-\item{band_select}{Choose how faraway the band you need. Default is "all", and it can range from 1 to the number of bins.}
+\item{band_select}{Choose how faraway the band you need. Default is "all", and it can range from 1 to the number of bins times the resolution.}
 }
 \description{
 This function allows you to obtain the PCA embedding for tSNE or UMAP plotting.
