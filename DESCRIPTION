@@ -25,7 +25,9 @@ Depends:
     harmony,
     FreeHiCLite,
     Matrix,
-    gmodels
+    gmodels,
+    doParallel,
+    foreach
 RoxygenNote: 7.1.1
 Suggests: 
     knitr,
