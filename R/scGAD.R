@@ -20,22 +20,11 @@ scGAD = function(path, genes, cores = 10, output){
     gad_score = matrix(0, nrow = nrow(genes), ncol = 2)
     for (i in 1:nrow(genes)){
       temp = cell[V1 == genes[i, ]$chr, ]
-      gene_pos = temp[V2 >= genes[i, ]$s1 &
+
+      gad_score[i, ] = c(genes[i, ]$gene_name, sum(temp[V2 >= genes[i, ]$s1 &
                         V2 <= genes[i, ]$s2 &
                         V4 >= genes[i, ]$s1 &
-                        V4 <= genes[i, ]$s2, ]
-
-      up = temp[V2 >= genes[i, ]$s2 &
-                  V2 <= (genes[i, ]$s2 + genes[i, ]$s2 - genes[i, ]$s1 + 1) &
-                  V4 >= genes[i, ]$s2 &
-                  V4 <= (genes[i, ]$s2 + genes[i, ]$s2 - genes[i, ]$s1 + 1), ]
-
-      down = temp[V2 >= (genes[i, ]$s1 - genes[i, ]$s2 + genes[i, ]$s1) &
-                    V2 <= genes[i, ]$s1 &
-                    V4 >= (genes[i, ]$s1 - genes[i, ]$s2 + genes[i, ]$s1) &
-                    V4 <= genes[i, ]$s1, ]
-
-      gad_score[i, ] = c(genes[i, ]$gene_name, ((2 * sum(gene_pos$V5)) / (sum(up$V5) + sum(down$V5))))
+                        V4 <= genes[i, ]$s2, ]$V5))
     }
     write.table(gad_score, file = paste(output, "/", names[k], sep = ""),
                 row.names = FALSE, col.names = FALSE, quote = FALSE, sep = "\t")
