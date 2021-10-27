@@ -106,10 +106,13 @@ After using scGAD function, you can get the scGAD score like below:
 
 ```
 >gad_score
-
+        cell_1    cell_2    cell_3
+Xkr4    -2.29     -0.87     -0.29
+Rp1     0.42      0.09      -1.93
+Rgs20   -0.14     -1.25     0.16
 ```
 
-Then, you can use PCA to look at the result, and cells are clearly separated.
+Then, you can use PCA to first perform dimensionality-reduction, and choose the first two principal components to visualize the result, and cells are clearly separated.
 
 ```{r PCA Result}
 library(ggplot2)
@@ -120,7 +123,9 @@ ggplot(gadPCA, aes(x = PC1, y = PC2, col = cellTypes)) + geom_point() + theme_bw
                    values = c("#1B4F72", "#F39C12", "#000000"))
 ```
 
-Finally, with scRNA-seq data on hand, we can do projection from scGAD to scRNA-seq. For scRNA-seq, we have 1076 cells from Mature Oligodendrocyte, Microglia Etc. and Hippocampal Granule Cell.
+## 2. Projection of scGAD on scRNA-seq
+
+Finally, with scRNA-seq data on hand, we can do projection from scGAD to scRNA-seq. For scRNA-seq, we have 1076 cells from Mature Oligodendrocyte, Microglia Etc. and Hippocampal Granule Cell. These cells are also from [Tan et al. 2021. Cell](https://www.cell.com/cell/fulltext/S0092-8674(20)31754-2?_returnURL=https%3A%2F%2Flinkinghub.elsevier.com%2Fretrieve%2Fpii%2FS0092867420317542%3Fshowall%3Dtrue).
 
 ```{r Projection}
 library(ggplot2)
