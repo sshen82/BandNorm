@@ -124,12 +124,12 @@ gad_score = scGAD(hic_df = scgad_df, genes = geneANNO, depthNorm = TRUE, cores =
 
 Then, you can use PCA to first perform dimensionality-reduction, and choose the first two principal components to visualize the result, and cells are clearly separated.
 
-```{r PCA Result}
+```{r PCA Result, fig.width = 13, fig.height = 8}
 library(ggplot2)
 summary = summary[match(colnames(gad_score), summary$cell), ]
 gadPCA = prcomp(gad_score)$rotation[, 1:15]
 gadPCA = data.frame(gadPCA, cellTypes = summary$`cell-type cluster`)
-ggplot(gadPCA, aes(x = PC1, y = PC2, col = cellTypes)) + geom_point() + theme_bw(base_size = 10) + scale_color_manual(breaks = c("Hippocampal Granule Cell", "Mature Oligodendrocyte", "Microglia Etc."),
+ggplot(gadPCA, aes(x = PC1, y = PC2, col = cellTypes)) + geom_point() + theme_bw(base_size = 20) + scale_color_manual(breaks = c("Hippocampal Granule Cell", "Mature Oligodendrocyte", "Microglia Etc."),
                    values = c("#1B4F72", "#F39C12", "#000000"))
 ```
 
@@ -137,7 +137,7 @@ ggplot(gadPCA, aes(x = PC1, y = PC2, col = cellTypes)) + geom_point() + theme_bw
 
 Finally, with scRNA-seq data on hand, we can do projection from scGAD to scRNA-seq. For scRNA-seq, we have 1076 cells from Mature Oligodendrocyte, Microglia Etc. and Hippocampal Granule Cell. These cells are also from [Tan et al. 2021. Cell](https://www.cell.com/cell/fulltext/S0092-8674(20)31754-2?_returnURL=https%3A%2F%2Flinkinghub.elsevier.com%2Fretrieve%2Fpii%2FS0092867420317542%3Fshowall%3Dtrue).
 
-```{r Projection}
+```{r Projection, fig.width = 13, fig.height = 8}
 library(ggplot2)
 library(viridis)
 library(dplyr)
@@ -152,7 +152,7 @@ names(cellTypeList[[2]]) = colnames(RNA)
 
 combinedAssay = runProjection(DataList, doNorm = c(FALSE, FALSE), cellTypeList)
 
-p_celltype <- DimPlot(combinedAssay, reduction = "umap", label = TRUE, repel = TRUE, pt.size = 1.3, shape.by = "method", label.size = 6) +
+p_celltype <- DimPlot(combinedAssay, reduction = "umap", label = TRUE, repel = TRUE, pt.size = 1.3, shape.by = "method", label.size = 12) +
 xlab("UMAP 1") +
 ylab("UMAP 2") +
 scale_color_manual(breaks = c("Hippocampal Granule Cell", "Mature Oligodendrocyte", "Microglia Etc."),
@@ -164,7 +164,7 @@ pRNA = combinedAssay@reductions$umap@cell.embeddings %>% data.frame %>% mutate(c
 filter(label == "scRNA-seq") %>%
 ggplot(aes(x = UMAP_1, y = UMAP_2, color = celltype)) +
 geom_point(size = 0.3) +
-theme_pubr(base_size = 10) +
+theme_pubr(base_size = 17) +
 scale_color_manual(breaks = c("Hippocampal Granule Cell", "Mature Oligodendrocyte", "Microglia Etc."),
                    values = c("#1B4F72", "#F39C12", "#000000")) +
 xlab("UMAP 1") +
@@ -177,7 +177,7 @@ pGAD = combinedAssay@reductions$umap@cell.embeddings %>% data.frame %>% mutate(c
 filter(label == "scGAD") %>%
 ggplot(aes(x = UMAP_1, y = UMAP_2, color = celltype)) +
 geom_point(size = 0.3) +
-theme_pubr(base_size = 10) +
+theme_pubr(base_size = 17) +
 scale_color_manual(breaks = c("Hippocampal Granule Cell", "Mature Oligodendrocyte", "Microglia Etc."),
                    values = c("#1B4F72", "#F39C12", "#000000")) +
 xlab("UMAP 1") +
