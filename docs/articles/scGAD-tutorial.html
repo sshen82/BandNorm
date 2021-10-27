@@ -146,19 +146,20 @@ chr1    20000   40000   2       cell_3</code></pre>
 <div id="format-of-input-gene-coordinate-file-" class="section level3">
 <h3 class="hasAnchor">
 <a href="#format-of-input-gene-coordinate-file-" class="anchor"></a>1.2 Format of input gene coordinate file.</h3>
-<p>you can get mm9, mm10, hg19 and hg38 using data(Annotations). Below is the first ten rows of mm9Annotations. The first column is chromosome, s1 and s2 are start and end of the gene, and the last column is the gene name.</p>
+<p>you can get mm9, mm10, hg19 and hg38 using data(Annotations). Below is the first ten rows of mm9Annotations. The first column is chromosome, s1 and s2 are start and end of the gene, the fourth column is the strand, and the last column is the gene name.</p>
 <pre><code>&gt; mm9Annotations
-chr       s1       s2     gene_name
-chr1  3195982  3661579          Xkr4
-chr1  4334224  4350473           Rp1
-chr1  4481009  4486494         Sox17
-chr1  4763287  4775820        Mrpl15
-chr1  4797869  4876851        Lypla1
-chr1  4847775  4887987         Tcea1
-chr1  4869283  4870750        Gm6104
-chr1  4899657  5060366         Rgs20
-chr1  5073254  5152630       Atp6v1h
-chr1  5578574  5596212         Oprk1</code></pre>
+chr      s1      s2 strand gene_name
+chr1 3195982 3661579      -      Xkr4
+chr1 4334224 4350473      -       Rp1
+chr1 4481009 4486494      -     Sox17
+chr1 4763287 4775820      -    Mrpl15
+chr1 4797869 4876851      +    Lypla1
+   ---                                      
+chry 2086590 2097768      +   Rbmy1a1
+chry 2118049 2129045      +   Gm10256
+chry 2156899 2168120      +   Gm10352
+chry 2390390 2398856      +    Gm3376
+chry 2550262 2552957      +    Gm3395</code></pre>
 </div>
 <div id="demo-run-of-scgad" class="section level3">
 <h3 class="hasAnchor">
@@ -302,20 +303,20 @@ Rgs20   -0.14     -1.25     0.16</code></pre>
 <span class="co">#&gt; Warning: The default method for RunUMAP has changed from calling Python UMAP via reticulate to the R-native UWOT using the cosine metric</span>
 <span class="co">#&gt; To use Python UMAP via reticulate, set umap.method to 'umap-learn' and metric to 'correlation'</span>
 <span class="co">#&gt; This message will be shown once per session</span>
-<span class="co">#&gt; 16:56:14 UMAP embedding parameters a = 0.9922 b = 1.112</span>
-<span class="co">#&gt; 16:56:14 Read 1426 rows and found 5 numeric columns</span>
-<span class="co">#&gt; 16:56:14 Using Annoy for neighbor search, n_neighbors = 30</span>
-<span class="co">#&gt; 16:56:14 Building Annoy index with metric = cosine, n_trees = 50</span>
+<span class="co">#&gt; 17:22:03 UMAP embedding parameters a = 0.9922 b = 1.112</span>
+<span class="co">#&gt; 17:22:03 Read 1426 rows and found 5 numeric columns</span>
+<span class="co">#&gt; 17:22:03 Using Annoy for neighbor search, n_neighbors = 30</span>
+<span class="co">#&gt; 17:22:03 Building Annoy index with metric = cosine, n_trees = 50</span>
 <span class="co">#&gt; 0%   10   20   30   40   50   60   70   80   90   100%</span>
 <span class="co">#&gt; [----|----|----|----|----|----|----|----|----|----|</span>
 <span class="co">#&gt; **************************************************|</span>
-<span class="co">#&gt; 16:56:14 Writing NN index file to temp file C:\Users\solei\AppData\Local\Temp\Rtmp2hzItn\file2dcc62c63443</span>
-<span class="co">#&gt; 16:56:14 Searching Annoy index using 1 thread, search_k = 3000</span>
-<span class="co">#&gt; 16:56:15 Annoy recall = 100%</span>
-<span class="co">#&gt; 16:56:15 Commencing smooth kNN distance calibration using 1 thread</span>
-<span class="co">#&gt; 16:56:15 Initializing from normalized Laplacian + noise</span>
-<span class="co">#&gt; 16:56:15 Commencing optimization for 500 epochs, with 55294 positive edges</span>
-<span class="co">#&gt; 16:56:18 Optimization finished</span>
+<span class="co">#&gt; 17:22:03 Writing NN index file to temp file C:\Users\solei\AppData\Local\Temp\RtmpAB56FU\file246825161fc1</span>
+<span class="co">#&gt; 17:22:03 Searching Annoy index using 1 thread, search_k = 3000</span>
+<span class="co">#&gt; 17:22:03 Annoy recall = 100%</span>
+<span class="co">#&gt; 17:22:03 Commencing smooth kNN distance calibration using 1 thread</span>
+<span class="co">#&gt; 17:22:04 Initializing from normalized Laplacian + noise</span>
+<span class="co">#&gt; 17:22:04 Commencing optimization for 500 epochs, with 55294 positive edges</span>
+<span class="co">#&gt; 17:22:07 Optimization finished</span>
 
 <span class="va">p_celltype</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://satijalab.org/seurat/reference/DimPlot.html">DimPlot</a></span><span class="op">(</span><span class="va">combinedAssay</span>, reduction <span class="op">=</span> <span class="st">"umap"</span>, label <span class="op">=</span> <span class="cn">TRUE</span>, repel <span class="op">=</span> <span class="cn">TRUE</span>, pt.size <span class="op">=</span> <span class="fl">1.3</span>, shape.by <span class="op">=</span> <span class="st">"method"</span>, label.size <span class="op">=</span> <span class="fl">8</span><span class="op">)</span> <span class="op">+</span>
 <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">xlab</a></span><span class="op">(</span><span class="st">"UMAP 1"</span><span class="op">)</span> <span class="op">+</span>

@@ -70,21 +70,22 @@ chr1    20000   40000   2       cell_3
 ```
 
 ### 1.2 Format of input gene coordinate file.
-you can get mm9, mm10, hg19 and hg38 using data(Annotations). Below is the first ten rows of mm9Annotations. The first column is chromosome, s1 and s2 are start and end of the gene, and the last column is the gene name.
+you can get mm9, mm10, hg19 and hg38 using data(Annotations). Below is the first ten rows of mm9Annotations. The first column is chromosome, s1 and s2 are start and end of the gene, the fourth column is the strand, and the last column is the gene name.
 
 ```
 > mm9Annotations
-chr       s1       s2     gene_name
-chr1  3195982  3661579          Xkr4
-chr1  4334224  4350473           Rp1
-chr1  4481009  4486494         Sox17
-chr1  4763287  4775820        Mrpl15
-chr1  4797869  4876851        Lypla1
-chr1  4847775  4887987         Tcea1
-chr1  4869283  4870750        Gm6104
-chr1  4899657  5060366         Rgs20
-chr1  5073254  5152630       Atp6v1h
-chr1  5578574  5596212         Oprk1
+chr      s1      s2 strand gene_name
+chr1 3195982 3661579      -      Xkr4
+chr1 4334224 4350473      -       Rp1
+chr1 4481009 4486494      -     Sox17
+chr1 4763287 4775820      -    Mrpl15
+chr1 4797869 4876851      +    Lypla1
+   ---                                      
+chry 2086590 2097768      +   Rbmy1a1
+chry 2118049 2129045      +   Gm10256
+chry 2156899 2168120      +   Gm10352
+chry 2390390 2398856      +    Gm3376
+chry 2550262 2552957      +    Gm3395
 ```
 
 ### 1.3 Demo run of scGAD
