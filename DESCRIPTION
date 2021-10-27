@@ -23,6 +23,7 @@ Depends:
     umap,
     progress,
     harmony,
+    FreeHiCLite,
     Matrix,
     gmodels,
     doParallel,
