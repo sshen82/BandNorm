@@ -34,7 +34,7 @@ install_github("immunogenomics/harmony")
 `BandNorm` can be installed from Github:
 
 ```
-devtools::install_github('sshen82/BandNorm', build_vignettes = TRUE)
+devtools::install_github('sshen82/BandNorm', build_vignettes = FALSE)
 library(BandNorm)
 ```
 
