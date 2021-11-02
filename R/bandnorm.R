@@ -145,7 +145,7 @@ bandnorm_juicer = function(path = NULL, resolution, chroms, save = TRUE, save_pa
   paths = list.files(path, recursive = TRUE, full.names = TRUE)
   if (chroms == "all"){
     chroms = strawr::readHicChroms(paths[1])$name
-    chroms = chroms[!chroms %in% c("ALL", "M")]
+    chroms = chroms[!chroms %in% "ALL"]
   }
   chroms = as.character(chroms)
   names = basename(list.files(path, recursive = TRUE))
