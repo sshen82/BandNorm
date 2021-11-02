@@ -119,13 +119,13 @@ bandnorm = function(path = NULL, hic_df = NULL, save = TRUE, save_path = NULL) {
 #' @param save Whether to save each normalized cells. Default is TRUE. Note that if don't have large memory on your computer, and you need to use create_embedding function, it is highly recommended to save the cells because it helps lower the cost of memory in this function.
 #' @param save_path Indicate the output path for normalized cells. Only need it when "save" parameter is TRUE. Default is NULL.
 #' @param resolution Specify the resolution from the hic file."
-#' @param pairs Specify the pairs of chromosomes to use, the format is a string like "1". If the input is "all", it will include all the intra-chromosomal bin pairs.
+#' @param chroms Specify the chromosomes to use, the format is a string like "1". If the input is "all", it will include all the intra-chromosomal bin pairs.
 #' @export
 #' @import data.table
 #' @import dplyr
 #' @examples
 #' # We will have a thorough example for this part!
-bandnorm_juicer = function(path = NULL, resolution, pairs, save = TRUE, save_path = NULL) {
+bandnorm_juicer = function(path = NULL, resolution, chroms, save = TRUE, save_path = NULL) {
   if (is.null(path)){
     stop("Please specify the path.")
   }
@@ -143,27 +143,28 @@ bandnorm_juicer = function(path = NULL, resolution, pairs, save = TRUE, save_pat
     stop("path for data doesn't exist!")
   }
   paths = list.files(path, recursive = TRUE, full.names = TRUE)
-  if (pairs == "all"){
+  if (chroms == "all"){
     chroms = strawr::readHicChroms(paths[1])$name
-    pairs = chroms[!chroms %in% c("ALL", "M")]
+    chroms = chroms[!chroms %in% c("ALL", "M")]
   }
+  chroms = as.character(chroms)
   names = basename(list.files(path, recursive = TRUE))
   names = gsub(".hic", ".txt", names)
   load_cell = function(i) {
     cell = list()
     cell$contact = list()
-    for (i in 1:length(pairs)){
-      cell$contact[[pairs[i]]] =  as.matrix(strawr::straw("NONE", paths[i], 
-                                          pairs[i], pairs[i], unit = "BP", resolution))
-      colnames(cell$contact[[pairs[i]]]) = c("x", "y", "counts")
+    for (j in 1:length(chroms)){
+      cell$contact[[chroms[j]]] =  as.matrix(strawr::straw("NONE", paths[i], 
+                                                           chroms[j], chroms[j], unit = "BP", resolution))
+      colnames(cell$contact[[chroms[j]]]) = c("x", "y", "counts")
     }
     clean_cell = function(k) {
-      temp = as.data.frame(cell$contact[[pairs[k]]])
-      n = nrow(cell$contact[[pairs[k]]])
-      temp$chromA = rep(paste("chr", pairs[k], sep = ""), n)
+      temp = as.data.frame(cell$contact[[chroms[k]]])
+      n = nrow(cell$contact[[chroms[k]]])
+      temp$chromA = rep(paste("chr", chroms[k], sep = ""), n)
       return(temp %>% select(chromA, x, y, counts) %>% rename(chrom = chromA, binA = x, binB = y, count = counts))
     }
-    return(rbindlist(lapply(1:length(chr), clean_cell)) %>%
+    return(rbindlist(lapply(1:length(chroms), clean_cell)) %>%
       mutate(diag = abs(binB - binA), cell = names[i]))
   }
   hic_df = rbindlist(lapply(1:length(paths), load_cell))
