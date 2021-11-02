@@ -399,3 +399,37 @@ plot_embedding = function(embedding, type = "UMAP", cell_info = NULL, label = NU
   }
 }
 
+
+#' Cooler hic version of BandNorm (Thanks skelviper for supporting the code!)
+#'
+#' This function allows you to calculate the BandNorm normalization using the inputs that are cooler .mcool format. (We might also add .scool format.)
+#' @examples
+#' library(furrr)
+#' plan(multisession, workers = 20)
+#' totalCellList <- future_map(paste0("mcools/",dir("mcools")),cooler2bandnorm,1000000)
+#' totalDF <- bind_rows(totalCellList)
+
+
+bandnorm_cooler <- function(coolerPath, resolution, cellname = NULL){
+  if(length(cellname)==0){
+    cellname = str_split(coolerPath,"/")[[1]] %>% tail(n=1) %>% str_remove(".mcool")
+  }
+  if(str_split(coolerPath,fixed("."))[[1]] %>% tail(n=1) == "mcool"){
+    dump <- rhdf5::h5dump(coolerPath)
+    dump <- dump$resolutions[[which(names(dump$resolutions) ==format(resolution, scientific = FALSE))]]
+  }
+  
+  ids <- data.frame(chr = dump$bins$chrom, start = dump$bins$start, end = dump$bins$end, id = seq(1, length(dump$bins$chrom), by = 1)-1)
+  mat <- data.frame(bin1 = dump$pixels$bin1_id, bin2 = dump$pixels$bin2_id, IF = dump$pixels$count)
+  colnames(mat) <- c('i', 'j', 'IF')
+  colnames(ids) <- c('chr1', 'start1', 'end1', 'id')
+  
+  new_mat <- left_join(mat, ids, by = c('i' = 'id'))
+  colnames(ids) <- c('chr2', 'start2', 'end2', 'id')
+  new_mat <- left_join(new_mat, ids, by = c('j' = 'id'))
+  new_mat <- new_mat %>% filter(chr1==chr2)
+  new_mat <- new_mat %>% mutate(diag = (j-i)*resolution) %>% select(4,5,8,3,diag) %>% mutate(cellname=cellname)
+  names(new_mat) <- c("chrom","binA","binB","count","diag","cell")
+  return(new_mat)
+}
+
