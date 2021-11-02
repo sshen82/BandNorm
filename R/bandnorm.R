@@ -404,10 +404,7 @@ plot_embedding = function(embedding, type = "UMAP", cell_info = NULL, label = NU
 #'
 #' This function allows you to calculate the BandNorm normalization using the inputs that are cooler .mcool format. (We might also add .scool format.)
 #' @examples
-#' library(furrr)
-#' plan(multisession, workers = 20)
-#' totalCellList <- future_map(paste0("mcools/",dir("mcools")),cooler2bandnorm,1000000)
-#' totalDF <- bind_rows(totalCellList)
+#' # Will add example here.
 
 
 bandnorm_cooler <- function(coolerPath, resolution, cellname = NULL){
