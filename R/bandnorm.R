@@ -286,11 +286,11 @@ create_embedding = function(path = NULL, hic_df = NULL, mean_thres = 0, var_thre
     }
     cell_names = names
     load_cell = function(i) {
-      return(fread(paths[i]) %>% rename(chrom = V1, binA = V2, binB = V4, BandNorm = V5) %>%
-               mutate(diag = abs(binB - binA), BandNorm_s = BandNorm^2) %>% select(-V3))
+      return(fread(paths[i], select = c(1, 2, 4, 5)) %>% rename(chrom = V1, binA = V2, binB = V4, BandNorm = V5) %>%
+               mutate(diag = abs(binB - binA), BandNorm_s = BandNorm^2))
     }
     summarized_hic = c()
-    for (i in 1:length(path)) {
+    for (i in 1:length(paths)) {
       summarized_hic = bind_rows(summarized_hic, load_cell(i)) %>% group_by(chrom,
                                                                             binA, binB, diag) %>% summarise_all(sum)
     }
