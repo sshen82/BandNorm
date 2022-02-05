@@ -281,7 +281,7 @@ create_embedding = function(path = NULL, hic_df = NULL, chrs = paste0("chr", c(1
       output[[chrs[c]]] = hic_df
     }
   }
-  if (dim(output[["chr1"]])[2] < 50000){
+  if (dim(output[["chr1"]])[2] < 80000){
     SVDInput = c()
     for (i in 1:length(output)){
       SVDInput = cbind(SVDInput, output[[i]])
