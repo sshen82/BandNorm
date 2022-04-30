@@ -39,8 +39,8 @@ Suggests:
     markdown
 VignetteBuilder: knitr
 Imports: 
-    harmony
-Remotes: 
-    immunogenomics/harmony
-biocViews:
+    harmony,
     GenomicInteractions
+Remotes: 
+    immunogenomics/harmony,
+    ComputationalRegulatoryGenomicsICL/GenomicInteractions
