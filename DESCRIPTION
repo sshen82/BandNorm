@@ -31,8 +31,10 @@ Depends:
     strawr,
     rmarkdown,
     viridis,
-    sparsesvd
-RoxygenNote: 7.1.1
+    sparsesvd,
+    GenomicInteractions,
+    GenomicRanges
+RoxygenNote: 7.1.2
 Suggests: 
     knitr,
     rmarkdown,
@@ -41,6 +43,7 @@ VignetteBuilder: knitr
 biocViews: 
 Imports: 
     harmony,
-    GenomicInteractions
+    GenomicInteractions,
+    GenomicRanges
 Remotes: 
     immunogenomics/harmony
