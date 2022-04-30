@@ -38,8 +38,9 @@ Suggests:
     rmarkdown,
     markdown
 VignetteBuilder: knitr
+biocViews: 
 Imports: 
-    harmony
+    harmony,
+    GenomicInteractions
 Remotes: 
     immunogenomics/harmony
-biocViews: GenomicInteractions
