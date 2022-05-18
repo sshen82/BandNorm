@@ -21,8 +21,7 @@ scGAD = function(path = NULL, hic_df = NULL, genes, depthNorm = TRUE, cores = 4,
   genes$s2 <- ifelse(genes$strand == "-", genes$s2, genes$s2 + 1000)
   colnames(genes) = c("chr", "start", "end", "strand", "names")
   genes = makeGRangesFromDataFrame(genes, keep.extra.columns=TRUE)
-  all_vals = rep(0, length(genes$names))
-  names(all_vals) = genes$names[order(genes$names)]
+  g_names = genes$names
   if (is.null(hic_df)){
     if (binPair){
       names = basename(list.files(path, recursive = TRUE))
@@ -45,10 +44,9 @@ scGAD = function(path = NULL, hic_df = NULL, genes, depthNorm = TRUE, cores = 4,
         counts = data.table(reads = x.valid$counts[hits[[1]] == hits[[2]]], pos = hits$one[hits$one == hits$two])
         tabulated <- unique(counts$pos)
         counts <- setDT(counts)[,.(reads = sum(reads)), by = 'pos']$reads
-        dat = data.table(names = genes[unique(tabulated)]$names, counts = counts)
-        dat = dat[order(dat$names), ]
-        all_vals[names(all_vals) %in% dat$names] = dat$counts
-        all_vals
+        dat = data.table(names = c(g_names[unique(tabulated)], g_names[-unique(tabulated)]), 
+                         counts = c(counts, rep(0, length(g_names) - length(unique(tabulated)))))
+        dat[match(g_names, dat$names), ]$counts
       }
       plan(multicore, workers = cores)
       output <- future_sapply(1:length(names), getCount)
@@ -88,10 +86,9 @@ scGAD = function(path = NULL, hic_df = NULL, genes, depthNorm = TRUE, cores = 4,
         counts = data.table(reads = x.valid$counts[hits[[1]] == hits[[2]]], pos = hits$one[hits$one == hits$two])
         tabulated <- unique(counts$pos)
         counts <- setDT(counts)[,.(reads = sum(reads)), by = 'pos']$reads
-        dat = data.table(names = genes[unique(tabulated)]$names, counts = counts)
-        dat = dat[order(dat$names), ]
-        all_vals[names(all_vals) %in% dat$names] = dat$counts
-        all_vals
+        dat = data.table(names = c(g_names[unique(tabulated)], g_names[-unique(tabulated)]), 
+                         counts = c(counts, rep(0, length(g_names) - length(unique(tabulated)))))
+        dat[match(g_names, dat$names), ]$counts
       }
       plan(multicore, workers = cores)
       output <- future_sapply(1:length(names), getCount)
@@ -117,10 +114,9 @@ scGAD = function(path = NULL, hic_df = NULL, genes, depthNorm = TRUE, cores = 4,
       counts = data.table(reads = x.valid$counts[hits[[1]] == hits[[2]]], pos = hits$one[hits$one == hits$two])
       tabulated <- unique(counts$pos)
       counts <- aggregate(reads ~ pos, data = counts, FUN = sum)$reads
-      dat = data.table(names = genes[unique(tabulated)]$names, counts = counts)
-      dat = dat[order(dat$names), ]
-      all_vals[names(all_vals) %in% dat$names] = dat$counts
-      all_vals
+      dat = data.table(names = c(g_names[unique(tabulated)], g_names[-unique(tabulated)]), 
+                       counts = c(counts, rep(0, length(g_names) - length(unique(tabulated)))))
+      dat[match(g_names, dat$names), ]$counts
     }
     plan(multicore, workers = cores)
     output <- future_sapply(1:length(names), getCount)
