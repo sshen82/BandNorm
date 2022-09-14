@@ -2,7 +2,7 @@
 
 Ye Zheng\*, Siqi Shen\* and Sündüz Keleş. Normalization and De-noising of single-cell Hi-C Data with BandNorm and 3DVI. bioRxiv (2021). * contribute equally.
 
-Siqi Shen, Ye Zheng* and Sündüz Keleş*, scGAD: single-cell gene associating domain scores for exploratory analysis of scHi-C data. bioRxiv (2021). * corresponding authors.
+Siqi Shen, Ye Zheng* and Sündüz Keleş*, [scGAD: single-cell gene associating domain scores for exploratory analysis of scHi-C data.](https://doi.org/10.1093/bioinformatics/btac372) Bioinformatics (2022). * corresponding authors.
 
 ## What is BandNorm?
 
@@ -57,3 +57,6 @@ Below are the outputs of the code in the vignette.
 <img src="./figures/batch.png" alt="batch" width="700px">
 
 For more detail, please visit [BandNorm website](https://sshen82.github.io/BandNorm).
+
+## Licenses
+BandNorm is GNU GPL 3 licensed. Please refer to LICENSE.md for using BandNorm for your own purposes.
