@@ -39,13 +39,16 @@ scGAD = function(path = NULL, hic_df = NULL, genes, depthNorm = TRUE, cores = 4,
         two <- overlapsAny(anchorTwo(GInt), genes)
         x.valid <- GInt[one & two]
         hits <- list()
-        hits$one <- findOverlaps(anchorOne(x.valid), genes, select = "first")
-        hits$two <- findOverlaps(anchorTwo(x.valid), genes, select = "first")
-        counts = data.table(reads = x.valid$counts[hits[[1]] == hits[[2]]], pos = hits$one[hits$one == hits$two])
+        hits$one <- findOverlaps(anchorOne(x.valid), genes, select = "all")
+        hits$two <- findOverlaps(anchorTwo(x.valid), genes, select = "all")
+        hits = generics::intersect(data.frame(hits$one), data.frame(hits$two))
+        counts = data.table(reads = x.valid[hits$queryHits]$counts, pos = hits$subjectHits)
         tabulated <- unique(counts$pos)
-        counts <- setDT(counts)[,.(reads = sum(reads)), by = 'pos']$reads
-        dat = data.table(names = c(g_names[unique(tabulated)], g_names[-unique(tabulated)]), 
-                         counts = c(counts, rep(0, length(g_names) - length(unique(tabulated)))))
+        counts <- setDT(counts)[, .(reads = sum(reads)), 
+                            by = "pos"]$reads
+        dat = data.table(names = c(g_names[unique(tabulated)], 
+                               g_names[-unique(tabulated)]), counts = c(counts, 
+                            rep(0, length(g_names) - length(unique(tabulated)))))
         dat[match(g_names, dat$names), ]$counts
       }
       plan(multicore, workers = cores)
@@ -81,13 +84,16 @@ scGAD = function(path = NULL, hic_df = NULL, genes, depthNorm = TRUE, cores = 4,
         two <- overlapsAny(anchorTwo(GInt), genes)
         x.valid <- GInt[one & two]
         hits <- list()
-        hits$one <- findOverlaps(anchorOne(x.valid), genes, select = "first")
-        hits$two <- findOverlaps(anchorTwo(x.valid), genes, select = "first")
-        counts = data.table(reads = x.valid$counts[hits[[1]] == hits[[2]]], pos = hits$one[hits$one == hits$two])
+        hits$one <- findOverlaps(anchorOne(x.valid), genes, select = "all")
+        hits$two <- findOverlaps(anchorTwo(x.valid), genes, select = "all")
+        hits = generics::intersect(data.frame(hits$one), data.frame(hits$two))
+        counts = data.table(reads = x.valid[hits$queryHits]$counts, pos = hits$subjectHits)
         tabulated <- unique(counts$pos)
-        counts <- setDT(counts)[,.(reads = sum(reads)), by = 'pos']$reads
-        dat = data.table(names = c(g_names[unique(tabulated)], g_names[-unique(tabulated)]), 
-                         counts = c(counts, rep(0, length(g_names) - length(unique(tabulated)))))
+        counts <- setDT(counts)[, .(reads = sum(reads)), 
+                            by = "pos"]$reads
+        dat = data.table(names = c(g_names[unique(tabulated)], 
+                               g_names[-unique(tabulated)]), counts = c(counts, 
+                            rep(0, length(g_names) - length(unique(tabulated)))))
         dat[match(g_names, dat$names), ]$counts
       }
       plan(multicore, workers = cores)
@@ -109,13 +115,16 @@ scGAD = function(path = NULL, hic_df = NULL, genes, depthNorm = TRUE, cores = 4,
       two <- overlapsAny(anchorTwo(GInt), genes)
       x.valid <- GInt[one & two]
       hits <- list()
-      hits$one <- findOverlaps(anchorOne(x.valid), genes, select = "first")
-      hits$two <- findOverlaps(anchorTwo(x.valid), genes, select = "first")
-      counts = data.table(reads = x.valid$counts[hits[[1]] == hits[[2]]], pos = hits$one[hits$one == hits$two])
+      hits$one <- findOverlaps(anchorOne(x.valid), genes, select = "all")
+      hits$two <- findOverlaps(anchorTwo(x.valid), genes, select = "all")
+      hits = generics::intersect(data.frame(hits$one), data.frame(hits$two))
+      counts = data.table(reads = x.valid[hits$queryHits]$counts, pos = hits$subjectHits)
       tabulated <- unique(counts$pos)
-      counts <- aggregate(reads ~ pos, data = counts, FUN = sum)$reads
-      dat = data.table(names = c(g_names[unique(tabulated)], g_names[-unique(tabulated)]), 
-                       counts = c(counts, rep(0, length(g_names) - length(unique(tabulated)))))
+      counts <- setDT(counts)[, .(reads = sum(reads)), 
+                          by = "pos"]$reads
+      dat = data.table(names = c(g_names[unique(tabulated)], 
+                             g_names[-unique(tabulated)]), counts = c(counts, 
+                          rep(0, length(g_names) - length(unique(tabulated)))))
       dat[match(g_names, dat$names), ]$counts
     }
     plan(multicore, workers = cores)
