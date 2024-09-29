@@ -162,13 +162,14 @@ runProjection = function(DataList, doNorm, cellTypeList){
   nameAssays = names(DataList)
   GADList = list()
   for (i in 1:length(nameAssays)){
-    s = CreateSeuratObject(DataList[[i]])
+    s = CreateSeuratObject(count = DataList[[i]], data = DataList[[i]])
     if (doNorm[i]){
       s = NormalizeData(object = s)
       all.genes <- rownames(s)
       s <- ScaleData(s, features = all.genes)
     }else {
-      s@assays$RNA@scale.data = DataList[[i]]
+      s <- SetAssayData(s, assay = "RNA", slot = "scale.data", new.data = as.matrix(DataList[[i]]))
+
     }
     Idents(s) = cellTypeList[[i]]
     s$method = nameAssays[i]
@@ -191,4 +192,3 @@ runProjection = function(DataList, doNorm, cellTypeList){
   getCombined <- RunUMAP(getCombined, reduction = "pca", dims = 1:5)
   getCombined
 }
-
